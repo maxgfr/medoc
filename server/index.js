@@ -1,6 +1,6 @@
 // MAJ 03/06
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('data/db.sqlite3');
+var db = new sqlite3.Database('data/db.db');
 var fs = require('fs');
 var input = fs.createReadStream('./data/CIS_CIP_bdpm.txt');
 var all_medoc = [];
@@ -78,12 +78,8 @@ function readByCip13(cip13) {
   db.close();
 }
 
-/*
-readLines(input, process, function() {
-  saveData(all_medoc);
-});
+//readLines(input, process, () => { saveData(all_medoc); });
 
-readAllData();
-*/
+//readAllData();
 
-readByCip13("3400933254063");
+//readByCip13("3400933254063");
