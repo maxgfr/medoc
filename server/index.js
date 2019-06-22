@@ -64,7 +64,17 @@ function readAllData() {
         });
     });
   });
+  db.close();
+}
 
+function readByCip13(cip13) {
+  db.serialize(function() {
+    db.all("SELECT cis FROM CIP_CIS WHERE cip13 = ?", cip13, function(err, rows) {
+        rows.forEach(function (row) {
+            console.log(row.cis);
+        });
+    });
+  });
   db.close();
 }
 
@@ -72,6 +82,8 @@ function readAllData() {
 readLines(input, process, function() {
   saveData(all_medoc);
 });
-*/
 
 readAllData();
+*/
+
+readByCip13("3400933254063");
