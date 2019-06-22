@@ -2,7 +2,9 @@ import React from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { Asset } from 'expo-asset';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { SQLite } from 'expo-sqlite';
 
 export default class SettingsScreen extends React.Component {
   state = {
@@ -13,6 +15,18 @@ export default class SettingsScreen extends React.Component {
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
+    let file = Asset.fromModule(require("../assets/database/db.sqlite3"));
+    console.log(file);
+    const db = SQLite.openDatabase("../assets/database/db.sqlite3");
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT cis FROM CIP_CIS WHERE cip13 = ?',
+        ["3400933254063"],
+        (_, { rows: { _array } }) => console.log('yo')
+      );
+    });
+
+    console.log(db)
   }
 
   render() {
