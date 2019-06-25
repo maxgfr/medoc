@@ -21,7 +21,7 @@ HistoricStack.navigationOptions = {
       name={'history'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#2f95dc' : '#ccc'}
+      color={focused ? '#20b6d8' : '#ccc'}
     />
   ),
 };
@@ -37,7 +37,7 @@ HomeStack.navigationOptions = {
       name={'barcode-scan'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#2f95dc' : '#ccc'}
+      color={focused ? '#20b6d8' : '#ccc'}
     />
   ),
 };
@@ -53,21 +53,23 @@ SearchStack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#2f95dc' : '#ccc'}
+      color={focused ? '#20b6d8' : '#ccc'}
     />
   ),
 };
 
-export default createBottomTabNavigator({
-  HistoricStack,
-  HomeStack,
-  SearchStack,
-},
-{
-  tabBarOptions: {
-      showLabel: false,
-      style: {
-          backgroundColor: '#181F31'
-      }
+export default createBottomTabNavigator(
+  {
+    HistoricStack,
+    HomeStack,
+    SearchStack,
+  },
+  {
+    tabBarOptions: {
+        showLabel: false,
+        style: {
+            backgroundColor: '#09234c'
+        }
+    }
   }
-});
+);
