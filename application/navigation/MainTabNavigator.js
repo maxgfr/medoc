@@ -5,10 +5,10 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 
-import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import HistoricScreen from '../screens/HistoricScreen';
 import SearchScreen from '../screens/SearchScreen';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const HistoricStack = createStackNavigator({
   Links: HistoricScreen,
@@ -17,9 +17,11 @@ const HistoricStack = createStackNavigator({
 HistoricStack.navigationOptions = {
   tabBarLabel: 'Historic',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
+    <MaterialCommunityIcons
+      name={'history'}
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? '#2f95dc' : '#ccc'}
     />
   ),
 };
@@ -31,9 +33,11 @@ const HomeStack = createStackNavigator({
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
+    <MaterialCommunityIcons
+      name={'barcode-scan'}
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? '#2f95dc' : '#ccc'}
     />
   ),
 };
@@ -45,9 +49,11 @@ const SearchStack = createStackNavigator({
 SearchStack.navigationOptions = {
   tabBarLabel: 'Search',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
+    <Ionicons
       name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? '#2f95dc' : '#ccc'}
     />
   ),
 };
@@ -56,4 +62,12 @@ export default createBottomTabNavigator({
   HistoricStack,
   HomeStack,
   SearchStack,
+},
+{
+  tabBarOptions: {
+      showLabel: false,
+      style: {
+          backgroundColor: '#181F31'
+      }
+  }
 });

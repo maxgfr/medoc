@@ -8,15 +8,20 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { SQLite } from 'expo-sqlite';
 
 export default class HomeScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null,
+    footer: null
+  };
+
   state = {
-    hasCameraPermission: null,
-    scanned: false,
+    hasCameraPermission: null
   };
 
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
-    var base_uri =   Asset.fromModule(require('../assets/database/db.db')).uri;
+    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
     FileSystem.downloadAsync(base_uri, new_uri)
       .then(() => {
@@ -33,7 +38,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    const { hasCameraPermission, scanned } = this.state;
+    const { hasCameraPermission } = this.state;
 
     if (hasCameraPermission === null) {
       return <Text>Requesting for camera permission</Text>;
@@ -44,12 +49,9 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+          onBarCodeScanned={this.handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
-        {scanned && (
-          <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })} />
-        )}
       </View>
     );
   }
