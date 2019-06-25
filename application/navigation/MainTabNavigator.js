@@ -8,10 +8,12 @@ import {
 import HomeScreen from '../screens/HomeScreen';
 import HistoricScreen from '../screens/HistoricScreen';
 import SearchScreen from '../screens/SearchScreen';
+import MedocScreen from '../screens/MedocScreen';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const HistoricStack = createStackNavigator({
   Links: HistoricScreen,
+  Medoc: MedocScreen
 });
 
 HistoricStack.navigationOptions = {
@@ -21,13 +23,14 @@ HistoricStack.navigationOptions = {
       name={'history'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#20b6d8' : '#ccc'}
+      color={focused ? '#FEC466' : '#33374B'}
     />
   ),
 };
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  Medoc: MedocScreen
 });
 
 HomeStack.navigationOptions = {
@@ -37,13 +40,14 @@ HomeStack.navigationOptions = {
       name={'barcode-scan'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#20b6d8' : '#ccc'}
+      color={focused ? '#FEC466' : '#33374B'}
     />
   ),
 };
 
 const SearchStack = createStackNavigator({
   Settings: SearchScreen,
+  Medoc: MedocScreen
 });
 
 SearchStack.navigationOptions = {
@@ -53,7 +57,7 @@ SearchStack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
       size={26}
       style={{ marginBottom: -3 }}
-      color={focused ? '#20b6d8' : '#ccc'}
+      color={focused ? '#FEC466' : '#33374B'}
     />
   ),
 };
@@ -68,7 +72,7 @@ export default createBottomTabNavigator(
     tabBarOptions: {
         showLabel: false,
         style: {
-            backgroundColor: '#09234c'
+            backgroundColor: '#11131E'
         }
     }
   }
