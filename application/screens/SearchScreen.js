@@ -41,6 +41,11 @@ export default class SearchScreen extends React.Component {
     }
   };
 
+  _onPress = (item) => {
+    console.log(item);
+    this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS});
+  }
+
   _listHeaderComponent = () => (
     <SearchBar
       containerStyle={{backgroundColor: 'transparent', borderBottomWidth: 0, borderTopWidth: 0}}
@@ -51,18 +56,26 @@ export default class SearchScreen extends React.Component {
   );
 
   _renderItem = ({item, index}) => (
-    <TouchableOpacity onPress={(item) => {this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS})}} style={{margin: 6, borderRadius: 10, backgroundColor: '#33384d', justifyContent : 'center'}}>
-      <View style={{padding: 20, justifyContent: 'center'}}>
-        <Text style={{color: '#ffffff', fontSize: 15, marginTop: 12, textAlign: 'center'}}>{item.denomination}</Text>
+    <TouchableOpacity onPress={this._onPress} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center'}}>
+      <View style={{padding: 20, justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+        <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12, textAlign: 'center'}}>{item.denomination}</Text>
       </View>
     </TouchableOpacity>
+  );
+
+  _listEmptyComponent = ({item, index}) => (
+    <View style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center'}}>
+      <View style={{padding: 20, justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+        <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12, textAlign: 'center'}}>Toutes les données présentes sont certifiés par l'état</Text>
+      </View>
+    </View>
   );
 
   render() {
     return (
       <Container>
         <StatusBar barStyle="dark-content" />
-        <Header style={{backgroundColor: "#1d222b", borderBottomWidth: 0}}>
+        <Header style={{backgroundColor: "#161a21", borderBottomWidth: 0}}>
           <Left />
           <Body>
             <Title style={{color: '#ffffff'}}>Recherche</Title>
@@ -74,7 +87,8 @@ export default class SearchScreen extends React.Component {
           data={this.state.result}
           ListHeaderComponent={this._listHeaderComponent}
           renderItem={this._renderItem}
-          style={{backgroundColor: "#1d222b"}}
+          ListEmptyComponent={this._listEmptyComponent}
+          style={{backgroundColor: "#161a21"}}
         />
       </Container>
     );
