@@ -4,7 +4,10 @@ import {
   Text,
   FlatList,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import {
@@ -13,7 +16,8 @@ import {
   Left,
   Body,
   Right,
-  Title
+  Title,
+  Icon
 } from 'native-base';
 import { SearchBar } from 'react-native-elements';
 
@@ -25,70 +29,134 @@ export default class SearchScreen extends React.Component {
 
   state = {
     search: '',
-    result: []
+    result: [],
+    historic: []
   };
 
+  async componentDidMount() {
+    await this.getHistoric();
+  }
+
   updateSearch = async (search) => {
-    this.setState({ search: search });
+    this.setState({ search: search, isSearching: true });
     if(search != "") {
       const response_serv = await fetch('https://www.open-medicaments.fr/api/v1/medicaments?query='+search, {
           method: 'GET'
       });
       var result_serv = await response_serv.json();
-      this.setState({result: result_serv});
+      this.setState({result: result_serv, isSearching: false});
     } else {
-      this.setState({result: []});
+      this.setState({result: [], isSearching: false, search: ""});
     }
   };
 
-  _onPress = (item) => {
-    console.log(item);
-    this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS});
+  getHistoric = async () => {
+    try {
+      const myArray = await AsyncStorage.getItem('@historique');
+      if (myArray !== null) {
+        var realArray = JSON.parse(myArray);
+        this.setState({historic: realArray})
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  setHistoric = async (item) => {
+    var array = this.state.historic;
+    if(array.includes(item)) {
+      for( var i = 0; i < array.length; i++) {
+         if ( array[i] == item) {
+           array.splice(i, 1);
+         }
+      }
+      array.unshift(item);
+    } else {
+      array.unshift(item);
+    }
+    if(array.length > 10) {
+      array.pop();
+    }
+    this.setState({historic: array});
+    try {
+      await AsyncStorage.setItem('@historique', JSON.stringify(this.state.historic));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  _onPress = async (item) => {
+    await this.setHistoric(item);
+    var deno = item.denomination.substr(0, item.denomination.indexOf(','));
+    this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS, denomination: deno});
   }
 
   _listHeaderComponent = () => (
-    <SearchBar
-      containerStyle={{backgroundColor: 'transparent', borderBottomWidth: 0, borderTopWidth: 0}}
-      placeholder="Recherchez votre médicament ici..."
-      onChangeText={this.updateSearch}
-      value={this.state.search}
-    />
+    <View>
+      <Text style={[iOSUIKit.largeTitleEmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Médoc</Text>
+      <SearchBar
+        containerStyle={{backgroundColor: 'transparent', borderBottomWidth: 0, borderTopWidth: 0, marginBottom: 15}}
+        placeholder="Recherchez votre médicament..."
+        onChangeText={this.updateSearch}
+        value={this.state.search}
+      />
+    </View>
+
   );
 
   _renderItem = ({item, index}) => (
-    <TouchableOpacity onPress={this._onPress} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center'}}>
-      <View style={{padding: 20, justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
-        <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12, textAlign: 'center'}}>{item.denomination}</Text>
-      </View>
+    <TouchableOpacity onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+        <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>{item.denomination}</Text>
     </TouchableOpacity>
   );
 
   _listEmptyComponent = ({item, index}) => (
-    <View style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center'}}>
-      <View style={{padding: 20, justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
-        <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12, textAlign: 'center'}}>Toutes les données présentes sont certifiés par l'état</Text>
-      </View>
+    <View>
+      {
+        this.state.search !== '' && !this.state.isSearching ?
+        <View onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+            <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Médicament non trouvé</Text>
+        </View>
+        : null
+      }
+      {
+        this.state.search === '' && !this.state.isSearching ?
+        <View>
+          <TouchableOpacity onPress={() => {this.props.navigation.navigate('Camera')}} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
+            <Icon type='MaterialCommunityIcons' name='barcode-scan' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15 }} />
+            <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Effectuez une recherche avec l'appareil photo de votre smartphone</Text>
+          </TouchableOpacity>
+          <Text style={[iOSUIKit.title3EmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Historique</Text>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={this.state.historic}
+            renderItem={this._renderItem}
+            style={{backgroundColor: "#161a21"}}
+          />
+        </View>
+        : null
+      }
+      {
+        this.state.isSearching ?
+        <View style={{marginTop: 20}}>
+          <ActivityIndicator size="large"/>
+        </View>
+        : null
+      }
     </View>
   );
 
   render() {
     return (
-      <Container>
-        <StatusBar barStyle="dark-content" />
-        <Header style={{backgroundColor: "#161a21", borderBottomWidth: 0}}>
-          <Left />
-          <Body>
-            <Title style={{color: '#ffffff'}}>Recherche</Title>
-          </Body>
-          <Right />
-        </Header>
+      <Container style={{ flex: 1, backgroundColor: "#161a21"}}>
+        <StatusBar barStyle="light-content" />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={this.state.result}
           ListHeaderComponent={this._listHeaderComponent}
           renderItem={this._renderItem}
           ListEmptyComponent={this._listEmptyComponent}
-          style={{backgroundColor: "#161a21"}}
+          contentContainerStyle={{backgroundColor: "#161a21", paddingHorizontal: 10, paddingTop:40}}
         />
       </Container>
     );

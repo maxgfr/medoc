@@ -1,10 +1,16 @@
 import React from 'react';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 
-import MainTabNavigator from './MainTabNavigator';
+import CameraScreen from '../screens/CameraScreen';
+import HistoricScreen from '../screens/HistoricScreen';
+import SearchScreen from '../screens/SearchScreen';
+import MedocScreen from '../screens/MedocScreen';
 
 export default createAppContainer(
-  createSwitchNavigator({
-    Main: MainTabNavigator,
+  createStackNavigator({
+    Search: SearchScreen,
+    Camera: CameraScreen,
+    Historic: HistoricScreen,
+    Medoc: MedocScreen
   })
 );

@@ -6,7 +6,7 @@ import { Asset } from 'expo-asset';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { SQLite } from 'expo-sqlite';
 
-export default class HomeScreen extends React.Component {
+export default class CameraScreen extends React.Component {
 
   static navigationOptions = {
     header: null,
