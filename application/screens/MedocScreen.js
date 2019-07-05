@@ -3,7 +3,6 @@ import {
   View,
   TouchableWithoutFeedback
 } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import {
   Container,
   Header,
@@ -53,7 +52,7 @@ export default class MedocScreen extends React.Component {
       resp.url = ''
     }
     resp.indicationsTherapeutiques = text_without_link;
-    console.log(resp);
+    //console.log(resp);
     return resp;
   }
 
@@ -77,7 +76,7 @@ export default class MedocScreen extends React.Component {
           <Right />
         </Header>
         <Content style={{backgroundColor: "#161a21"}}>
-            <Medocomponent medoc={this.state.medoc} />
+            <Medocomponent medoc={this.state.medoc} cis={this.state.cis} />
         </Content>
       </Container>
     );

@@ -62,31 +62,27 @@ export default class SearchScreen extends React.Component {
     }
   }
 
-  setHistoric = async (item) => {
+  setHistoric = (item) => {
     var array = this.state.historic;
-    if(array.includes(item)) {
-      for( var i = 0; i < array.length; i++) {
-         if ( array[i] == item) {
-           array.splice(i, 1);
-         }
-      }
-      array.unshift(item);
-    } else {
-      array.unshift(item);
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].codeCIS === item.codeCIS) {
+            array.splice(i, 1);
+        }
     }
+    array.unshift(item);
     if(array.length > 10) {
       array.pop();
     }
     this.setState({historic: array});
     try {
-      await AsyncStorage.setItem('@historique', JSON.stringify(this.state.historic));
+      AsyncStorage.setItem('@historique', JSON.stringify(array));
     } catch (error) {
       console.log(error);
     }
   }
 
-  _onPress = async (item) => {
-    await this.setHistoric(item);
+  _onPress = (item) => {
+    this.setHistoric(item);
     var deno = item.denomination.substr(0, item.denomination.indexOf(','));
     this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS, denomination: deno});
   }
@@ -114,7 +110,7 @@ export default class SearchScreen extends React.Component {
     <View>
       {
         this.state.search !== '' && !this.state.isSearching ?
-        <View onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+        <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
             <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Médicament non trouvé</Text>
         </View>
         : null
@@ -131,6 +127,13 @@ export default class SearchScreen extends React.Component {
             keyExtractor={(item, index) => index.toString()}
             data={this.state.historic}
             renderItem={this._renderItem}
+            ListEmptyComponent={() => {
+              return(
+                <View onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+                    <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Pas d'historique</Text>
+                </View>
+              )
+            }}
             style={{backgroundColor: "#161a21"}}
           />
         </View>
