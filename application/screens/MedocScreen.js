@@ -38,7 +38,11 @@ export default class MedocScreen extends React.Component {
     });
     var result_serv = await response_serv.json();
     var resp_modif = this.processResponse(result_serv);
-    this.setState({medoc: resp_modif});
+    if(this.state.denomination == '') {
+      this.setState({medoc: resp_modif, denomination: resp_modif.denomination});
+    } else {
+      this.setState({medoc: resp_modif});
+    }
   }
 
   processResponse = (resp) => {
