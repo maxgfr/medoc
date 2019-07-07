@@ -2,7 +2,9 @@
   "expo": {
     "name": "Médoc",
     "slug": "mehdicament",
-    "privacy": "public",
+    "githubUrl": "https://github.com/maxgfr/mehdicament",
+    "description": "Recherche de médicaments",
+    "privacy": "unlisted",
     "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
