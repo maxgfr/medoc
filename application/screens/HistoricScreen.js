@@ -47,7 +47,7 @@ export default class HistoricScreen extends React.Component {
   render() {
     return (
       <Container>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <Header style={{backgroundColor: "#161a21", borderBottomWidth: 0}}>
           <Left />
           <Body>

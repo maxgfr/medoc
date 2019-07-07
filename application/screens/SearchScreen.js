@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  Linking
 } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
+import * as Permissions from 'expo-permissions';
 import {
   Container,
   Header,
@@ -28,6 +31,7 @@ export default class SearchScreen extends React.Component {
   };
 
   state = {
+    hasCameraPermission: null,
     search: '',
     result: [],
     historic: []
@@ -35,6 +39,8 @@ export default class SearchScreen extends React.Component {
 
   async componentDidMount() {
     await this.getHistoric();
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({hasCameraPermission: status});
   }
 
   updateSearch = async (search) => {
@@ -100,6 +106,22 @@ export default class SearchScreen extends React.Component {
 
   );
 
+  _onCamera = () => {
+    if (this.state.hasCameraPermission !== 'granted') {
+      Alert.alert(
+        'Authoriser l\'accès à la caméra',
+        'Vous devez authoriser Médoc à accéder à votre caméra pour utiliser cette fonctionnalité.',
+        [
+          {text: 'Ouvrir mes paramètres', onPress: () => Linking.openURL('app-settings:')},
+          {text: 'Annuler', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        ],
+        { cancelable: false }
+      );
+    } else {
+      this.props.navigation.navigate('Camera');
+    }
+  }
+
   _renderItem = ({item, index}) => (
     <TouchableOpacity onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
         <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>{item.denomination}</Text>
@@ -118,7 +140,7 @@ export default class SearchScreen extends React.Component {
       {
         this.state.search === '' && !this.state.isSearching ?
         <View>
-          <TouchableOpacity onPress={() => {this.props.navigation.navigate('Camera')}} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
+          <TouchableOpacity onPress={this._onCamera} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
             <Icon type='MaterialCommunityIcons' name='barcode-scan' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15 }} />
             <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Effectuez une recherche avec l'appareil photo de votre smartphone</Text>
           </TouchableOpacity>

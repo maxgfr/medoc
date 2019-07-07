@@ -1,5 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  StatusBar
+} from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
@@ -11,7 +16,6 @@ import {
   Left,
   Body,
   Right,
-  Title,
   Content,
   Button,
   Icon
@@ -26,67 +30,60 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasCameraPermission: null,
       codeCIS: '',
       scanError: false,
-      isRunning: false
+      isRunning: false,
+      db: null
     };
   }
 
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
+    var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
+    await FileSystem.downloadAsync(base_uri, new_uri);
+    var db = SQLite.openDatabase('my_db.db');
+    this.setState({ db: db });
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    if(this.state.isRunning) {
+    //console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && this.state.isRunning) {
+      this.setState({scanError: true});
       return;
     }
-    if(data.length == 13 && !this.state.scanError) {
-      this.setState({isRunning: true});
-      var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
-      var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
-      FileSystem.downloadAsync(base_uri, new_uri)
-        .then(() => {
-          var db = SQLite.openDatabase('my_db.db');
-          db.transaction(
-            tx => {
-              tx.executeSql(`SELECT cis FROM CIP_CIS WHERE cip13 = ?`, [data], (_, { rows }) => {
-                console.log(JSON.stringify(rows))
-                if(rows.length >= 1) {
-                  this.setState({scanError: false, isRunning: false});
-                  this.props.navigation.navigate('Medoc', {codeCIS: rows._array[0].cis, denomination: ''});
-                }
-                else {
-                  this.setState({scanError: true, isRunning: false})
-                }
-              });
-            },
-            (err) => {
-              console.log("Failed Message", err);
-              this.setState({scanError: true, isRunning: false});
-            }
-          );
-        });
-    } else {
-      this.setState({scanError: true})
+    if(type == "org.iso.DataMatrix") {
+      data = data.substring(4,17);
+      //console.log(data);
     }
+    this.state.isRunning = true;
+    this.setState({scanError: false});
+    this.state.db.transaction(
+        tx => {
+          tx.executeSql(`SELECT cis FROM CIP_CIS WHERE cip13 = ?`, [data], (_, { rows }) => {
+            //console.log(JSON.stringify(rows))
+            if(rows.length >= 1) {
+              this.state.isRunning = false;
+              this.props.navigation.navigate('Medoc', {codeCIS: rows._array[0].cis, denomination: ''});
+            } else {
+              this.state.isRunning = false;
+              this.setState({scanError: true});
+            }
+          });
+        },
+        (err) => {
+          console.log("Failed Message", err);
+          this.state.isRunning = false;
+          this.setState({scanError: true});
+        }
+      );
   };
 
   render() {
-    const { hasCameraPermission, scanned } = this.state;
-
-    if (hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
-    }
-    if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
     return (
-      <View style={{ flex: 1 }}>
+      <Container style={{ flex: 1 }}>
+        <StatusBar barStyle="light-content" />
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+          onBarCodeScanned={this.handleBarCodeScanned}
           style={[StyleSheet.absoluteFill, styles.container]}>
           <Header style={{backgroundColor: "rgba(0, 0, 0, .6)", borderBottomWidth: 0}}>
             <Left>
@@ -106,15 +103,15 @@ export default class CameraScreen extends React.Component {
           {
             this.state.scanError ?
             <View style={styles.layerBottom}>
-              <Button style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: 'rgba(0, 0, 0, .6)', alignItems: 'center', justifyContent : 'center', alignSelf: 'center'}} onPress={() => this.setState({ scanError: false })} >
-                <Text style={{fontSize: 15,  color: '#0e3e8c', textAlign: 'center'}}>Code barre invalide. Cliquez ici pour rescanner un code-barres</Text>
-              </Button>
+              <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: 'rgba(0, 0, 0, .6)', alignItems: 'center', justifyContent : 'center', alignSelf: 'center'}} onPress={() => this.setState({ scanError: false })} >
+                <Text style={{fontSize: 15,  color: '#307fff', textAlign: 'center'}}>Code barre invalide. Veuillez rescanner le code-barres</Text>
+              </View>
             </View>
             :
             <View style={styles.layerBottom}/>
           }
         </BarCodeScanner>
-      </View>
+      </Container>
     );
   }
 }

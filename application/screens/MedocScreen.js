@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   View,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  StatusBar
 } from 'react-native';
 import {
   Container,
@@ -68,6 +69,7 @@ export default class MedocScreen extends React.Component {
   render() {
     return (
       <Container>
+        <StatusBar barStyle="light-content" />
         <Header style={{backgroundColor: "#161a21", borderBottomWidth: 0}}>
           <Left>
             <Button style={{marginLeft: 5}} transparent onPress={() => {this.props.navigation.goBack()}}>
