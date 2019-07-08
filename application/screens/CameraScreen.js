@@ -3,7 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
-  StatusBar
+  Dimensions
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as FileSystem from 'expo-file-system';
@@ -37,21 +37,37 @@ export default class CameraScreen extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
-    await FileSystem.downloadAsync(base_uri, new_uri);
-    var db = SQLite.openDatabase('my_db.db');
-    this.setState({ db: db });
+    this.ensureFolderExists().then(() => {
+      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+        var db = SQLite.openDatabase('my_db.db')
+        this.setState({ db: db });
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+
+  ensureFolderExists = () => {
+    const path = `${FileSystem.documentDirectory}SQLite`
+    return FileSystem.getInfoAsync(path).then(({exists}) => {
+      if (!exists) {
+        return FileSystem.makeDirectoryAsync(path)
+      } else {
+        return Promise.resolve(true)
+      }
+    })
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    //console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && this.state.isRunning) {
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.state.isRunning) {
       this.setState({scanError: true});
       return;
     }
-    if(type == "org.iso.DataMatrix") {
+    if(type == "org.iso.DataMatrix" || type == "16") {
       data = data.substring(4,17);
       //console.log(data);
     }
@@ -81,13 +97,12 @@ export default class CameraScreen extends React.Component {
   render() {
     return (
       <Container style={{ flex: 1 }}>
-        <StatusBar barStyle="light-content" />
         <BarCodeScanner
           onBarCodeScanned={this.handleBarCodeScanned}
           style={[StyleSheet.absoluteFill, styles.container]}>
-          <Header style={{backgroundColor: "rgba(0, 0, 0, .6)", borderBottomWidth: 0}}>
+          <Header iosBarStyle={"light-content"} androidStatusBarColor="#161a21" style={{backgroundColor: "rgba(0, 0, 0, .6)", borderBottomWidth: 0}}>
             <Left>
-              <Button style={{marginLeft: 5}} transparent onPress={() => {this.props.navigation.goBack()}}>
+              <Button transparent onPress={() => {this.props.navigation.goBack()}}>
                 <Icon name='arrow-back' style={{ color: '#ffffff'}} />
               </Button>
             </Left>
@@ -120,7 +135,8 @@ const opacity = 'rgba(0, 0, 0, .6)';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: '#161a21',
   },
   layerTop: {
     flex: 2,

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  StatusBar,
   TouchableOpacity,
   Image,
   AsyncStorage,
@@ -15,7 +14,6 @@ import { iOSUIKit } from 'react-native-typography';
 import * as Permissions from 'expo-permissions';
 import {
   Container,
-  Header,
   Left,
   Body,
   Right,
@@ -31,7 +29,6 @@ export default class SearchScreen extends React.Component {
   };
 
   state = {
-    hasCameraPermission: null,
     search: '',
     result: [],
     historic: []
@@ -39,8 +36,6 @@ export default class SearchScreen extends React.Component {
 
   async componentDidMount() {
     await this.getHistoric();
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({hasCameraPermission: status});
   }
 
   updateSearch = async (search) => {
@@ -106,8 +101,9 @@ export default class SearchScreen extends React.Component {
 
   );
 
-  _onCamera = () => {
-    if (this.state.hasCameraPermission !== 'granted') {
+  _onCamera = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    if (status !== 'granted') {
       Alert.alert(
         'Authoriser l\'accès à la caméra',
         'Vous devez authoriser Médoc à accéder à votre caméra pour utiliser cette fonctionnalité.',
@@ -174,7 +170,6 @@ export default class SearchScreen extends React.Component {
   render() {
     return (
       <Container style={{ flex: 1, backgroundColor: "#161a21"}}>
-        <StatusBar barStyle="light-content" />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={this.state.result}

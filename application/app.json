@@ -34,6 +34,10 @@
       "package": "com.maxgfr.mehdicament",
       "versionCode": 1,
     },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#161a21"
+    },
     "packagerOpts": {
       "assetExts": ["db"]
     }
