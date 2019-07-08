@@ -26,7 +26,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.maxgfr.mehdicament",
+      "buildNumber": "1",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.maxgfr.mehdicament",
+      "versionCode": 1,
     },
     "packagerOpts": {
       "assetExts": ["db"]
