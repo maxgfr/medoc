@@ -27,8 +27,11 @@
     ],
     "ios": {
       "bundleIdentifier": "com.maxgfr.mehdicament",
-      "buildNumber": "1",
-      "supportsTablet": true
+      "buildNumber": "2",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This lets you scan QR Code and barcode for searching medication information"
+      }
     },
     "android": {
       "package": "com.maxgfr.mehdicament",

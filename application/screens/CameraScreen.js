@@ -33,7 +33,8 @@ export default class CameraScreen extends React.Component {
       codeCIS: '',
       scanError: false,
       isRunning: false,
-      db: null
+      db: null,
+      dbLoaded: false
     };
   }
 
@@ -43,7 +44,7 @@ export default class CameraScreen extends React.Component {
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
         var db = SQLite.openDatabase('my_db.db')
-        this.setState({ db: db });
+        this.setState({ db: db, dbLoaded: true });
       }).catch((err) => {
         console.log(err);
       });
@@ -62,17 +63,17 @@ export default class CameraScreen extends React.Component {
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.state.isRunning) {
-      this.setState({scanError: true});
-      return;
-    }
+    //console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
     if(type == "org.iso.DataMatrix" || type == "16") {
       data = data.substring(4,17);
       //console.log(data);
     }
+    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.state.isRunning && !this.state.dbLoaded && data.length != 13) {
+      this.setState({scanError: true});
+      return;
+    }
     this.state.isRunning = true;
-    this.setState({scanError: false});
+    this.setState({scanError: false, isRunning: true});
     this.state.db.transaction(
         tx => {
           tx.executeSql(`SELECT cis FROM CIP_CIS WHERE cip13 = ?`, [data], (_, { rows }) => {
@@ -119,7 +120,7 @@ export default class CameraScreen extends React.Component {
             this.state.scanError ?
             <View style={styles.layerBottom}>
               <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: 'rgba(0, 0, 0, .6)', alignItems: 'center', justifyContent : 'center', alignSelf: 'center'}} onPress={() => this.setState({ scanError: false })} >
-                <Text style={{fontSize: 15,  color: '#307fff', textAlign: 'center'}}>Code barre invalide. Veuillez rescanner le code-barres</Text>
+                <Text style={{fontSize: 15,  color: '#307fff', textAlign: 'center'}}>Code-barres invalide. Veuillez rescanner le code-barres</Text>
               </View>
             </View>
             :
