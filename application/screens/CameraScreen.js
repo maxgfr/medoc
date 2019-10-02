@@ -9,7 +9,7 @@ import * as Permissions from 'expo-permissions';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { SQLite } from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import {
   Container,
   Header,
