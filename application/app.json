@@ -3,15 +3,15 @@
     "name": "Médoc",
     "slug": "mehdicament",
     "githubUrl": "https://github.com/maxgfr/mehdicament",
-    "description": "Recherche de médicaments",
+    "description": "Scan et recherche de médicaments",
     "privacy": "unlisted",
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.1",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.maxgfr.mehdicament",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This lets you scan QR Code and barcode for searching medication information"
@@ -35,7 +35,7 @@
     },
     "android": {
       "package": "com.maxgfr.mehdicament",
-      "versionCode": 2,
+      "versionCode": 3
     },
     "androidStatusBar": {
       "barStyle": "light-content",
