@@ -78,7 +78,7 @@ function readByCip13(cip13) {
   db.close();
 }
 
-//readLines(input, process, () => { saveData(all_medoc); });
+readLines(input, process, () => { saveData(all_medoc); });
 
 //readAllData();
 

@@ -1051,6 +1051,11 @@
     xcode "^2.0.0"
     xmldoc "^0.4.0"
 
+"@react-native-community/masked-view@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.1.tgz#dbcfc5ec08efbb02d4142dd9426c8d7a396829d7"
+  integrity sha512-EyJVSbarZkOPYq+zCZLx9apMcpwkX9HvH6R+6CeVL29q88kEFemnLO/IhmE4YX/0MfalsduI8eTi7fuQh/5VeA==
+
 "@react-navigation/core@^3.5.1":
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.1.tgz#7a2339fca3496979305fb3a8ab88c2ca8d8c214d"
@@ -2588,14 +2593,6 @@ expo-barcode-scanner@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/expo-barcode-scanner/-/expo-barcode-scanner-7.0.0.tgz#75bb2dc66565f9e46ae1d4330452e2c96a4b5a7f"
   integrity sha512-n8a/Xqtumw+o19PjFrPw12jfEyjA/UtJLAmXAiS0h+ociinjIkJKnLbCwUcCODLsgc6nn2lhd6TtZgQdvFEnbw==
-  dependencies:
-    lodash "^4.6.0"
-    prop-types "^15.6.0"
-
-expo-camera@~7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-7.0.0.tgz#3beee6c88df4d87dc3d0daefc8a9b3f5864a63bd"
-  integrity sha512-OukSvj9dzrTdADDfMZQlxfCyLjwg/nyTm2u9NDFQh6poEmu+IE2gn5ICnc7pmqR+ctAmU312KiRcLoBe/6sfIw==
   dependencies:
     lodash "^4.6.0"
     prop-types "^15.6.0"
@@ -5791,7 +5788,7 @@ react-native-reanimated@~1.2.0:
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.2.0.tgz#9219227a52a5dfa4d34c324596d6726ccd874293"
   integrity sha512-vkWRHrPK5qfHP/ZawlRoo38oeYe9NZaaOH/lmFxRcsKzaSK6x3H5ZPXI8lK6MfTLveqwo1QhJje3zIKXO4nQQw==
 
-react-native-safe-area-view@^0.14.1:
+react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"
   integrity sha512-MtRSIcZNstxv87Jet+UsPhEd1tpGe8cVskDXlP657x6rHpSrbrc+y13ZNXrwAgGNNhqQNX7UJT68ZIq//ZRmvw==
@@ -5884,12 +5881,12 @@ react-native-view-shot@2.6.0:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
-react-navigation-stack@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.9.3.tgz#956a41796878d82c4db506075afea5e3cef64120"
-  integrity sha512-MwQ55tfTJ5LhSdCHc8EMAH3bVinJ1hTLYhyxx7KgnReUl4BZ9s/Qn0fKC95BgSefAeunEphQPLHNNBygDN6uKw==
+react-navigation-stack@2.0.0-alpha.19:
+  version "2.0.0-alpha.19"
+  resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-2.0.0-alpha.19.tgz#2152433ef8ef5623b76c35cf1837da978fd223be"
+  integrity sha512-5fKoUeUtT3InRqH2IuDD/mBjmiB4u8zvrBiYqNo1VkcK8F2XiG2aN648CCgC41hGoEmyF+xExRbhl/qyVsvhRA==
   dependencies:
-    prop-types "^15.7.2"
+    react-native-safe-area-view "^0.14.6"
 
 react-navigation@^4.0.10:
   version "4.0.10"

@@ -39,15 +39,17 @@ export default class SearchScreen extends React.Component {
   }
 
   updateSearch = async (search) => {
-    this.setState({ search: search, isSearching: true });
-    if(search != "") {
-      const response_serv = await fetch('https://www.open-medicaments.fr/api/v1/medicaments?query='+search, {
-          method: 'GET'
-      });
-      var result_serv = await response_serv.json();
-      this.setState({result: result_serv, isSearching: false});
-    } else {
-      this.setState({result: [], isSearching: false, search: ""});
+    if(!this.state.isSearching) {
+      this.setState({search: search, isSearching: true });
+      if(search != "") {
+        const response_serv = await fetch('https://www.open-medicaments.fr/api/v1/medicaments?query='+search, {
+            method: 'GET'
+        });
+        var result_serv = await response_serv.json();
+        this.setState({result: result_serv, isSearching: false});
+      } else {
+        this.setState({result: [], isSearching: false, search: ""});
+      }
     }
   };
 
