@@ -11,7 +11,7 @@
       "android",
       "web"
     ],
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.maxgfr.mehdicament",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This lets you scan QR Code and barcode for searching medication information"
@@ -35,7 +35,7 @@
     },
     "android": {
       "package": "com.maxgfr.mehdicament",
-      "versionCode": 3
+      "versionCode": 4
     },
     "androidStatusBar": {
       "barStyle": "light-content",
