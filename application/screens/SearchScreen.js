@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import * as Permissions from 'expo-permissions';
+import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
+import * as SQLite from 'expo-sqlite';
 import {
   Container,
   Left,
@@ -32,18 +35,23 @@ export default class SearchScreen extends React.Component {
     search: '',
     result: [],
     historic: [],
-    db: null,
-    dbLoaded: false
+    dbGeneral: null,
+    dbGeneralLoaded: false,
   };
 
   async componentDidMount() {
     await this.getHistoric();
-    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
+    this.loadDbGeneral();
+  }
+
+  loadDbGeneral = () => {
+    var base_uri = Asset.fromModule(require('../assets/database/dbGeneral.db')).uri;
+    var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('my_db.db')
-        this.setState({ db: db, dbLoaded: true });
+        var db = SQLite.openDatabase('dbGeneral.db')
+        this.setState({ dbGeneral: db, dbGeneralLoaded: true });
+        console.log('dbGeneral loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -62,14 +70,27 @@ export default class SearchScreen extends React.Component {
   }
 
   updateSearch = async (search) => {
-    if(!this.state.isSearching) {
+    if(!this.state.isSearching && this.state.dbGeneralLoaded) {
       this.setState({search: search, isSearching: true });
       if(search != "") {
-        const response_serv = await fetch('https://www.open-medicaments.fr/api/v1/medicaments?query='+search, {
-            method: 'GET'
-        });
-        var result_serv = await response_serv.json();
-        this.setState({result: result_serv, isSearching: false});
+        var new_search = search+"%";
+        this.state.dbGeneral.transaction(
+            tx => {
+              tx.executeSql(`SELECT * FROM CIS_GENERAL WHERE denomination_medicament LIKE ?`, [new_search], (_, { rows }) => {
+                //console.log(JSON.stringify(rows))
+                if(rows.length >= 1) {
+                  //console.log(rows);
+                  this.setState({result: rows._array, isSearching: false});
+                } else {
+                  this.setState({isSearching: false});
+                }
+              });
+            },
+            (err) => {
+              console.log("Failed Message", err);
+              this.setState({result: [], isSearching: false, search: ""});
+            }
+          );
       } else {
         this.setState({result: [], isSearching: false, search: ""});
       }
@@ -91,7 +112,7 @@ export default class SearchScreen extends React.Component {
   setHistoric = (item) => {
     var array = this.state.historic;
     for (var i = 0; i < array.length; i++) {
-        if (array[i].codeCIS === item.codeCIS) {
+        if (array[i].cis === item.cis) {
             array.splice(i, 1);
         }
     }
@@ -107,10 +128,15 @@ export default class SearchScreen extends React.Component {
     }
   }
 
+  _deleteHistoric = () => {
+    AsyncStorage.clear();
+    this.setState({historic: []});
+  }
+
   _onPress = (item) => {
     this.setHistoric(item);
-    var deno = item.denomination.substr(0, item.denomination.indexOf(','));
-    this.props.navigation.navigate('Medoc', {codeCIS: item.codeCIS, denomination: deno});
+    var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
+    this.props.navigation.navigate('Medoc', {cis: item.cis, denomination: deno, data: item});
   }
 
   _listHeaderComponent = () => (
@@ -145,7 +171,7 @@ export default class SearchScreen extends React.Component {
 
   _renderItem = ({item, index}) => (
     <TouchableOpacity onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
-        <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>{item.denomination}</Text>
+        <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>{item.denomination_medicament}</Text>
     </TouchableOpacity>
   );
 
@@ -165,7 +191,12 @@ export default class SearchScreen extends React.Component {
             <Icon type='MaterialCommunityIcons' name='barcode-scan' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15 }} />
             <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Effectuez une recherche avec l'appareil photo de votre smartphone</Text>
           </TouchableOpacity>
-          <Text style={[iOSUIKit.title3EmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Historique</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={[iOSUIKit.title3EmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Historique</Text>
+            <TouchableOpacity onPress={this._deleteHistoric} >
+              <Text style={{color: '#e3e4e8', fontSize: 10, textAlign: 'center'}}>Supprimez l'historique</Text>
+            </TouchableOpacity>
+          </View>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
             data={this.state.historic}

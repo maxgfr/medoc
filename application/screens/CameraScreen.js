@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
-import * as Permissions from 'expo-permissions';
 import * as FileSystem from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -39,7 +38,7 @@ export default class CameraScreen extends React.Component {
   }
 
   componentDidMount() {
-    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
+    var base_uri = Asset.fromModule(require('../assets/database/dbCIP.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
