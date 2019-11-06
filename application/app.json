@@ -42,7 +42,9 @@
       "backgroundColor": "#161a21"
     },
     "packagerOpts": {
-      "assetExts": ["db"]
+      "assetExts": [
+        "db"
+      ]
     }
   }
 }

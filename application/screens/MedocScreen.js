@@ -35,8 +35,18 @@ export default class MedocScreen extends React.Component {
       cipData: {},
       compoData: {},
       conditionData: {},
-      generalData: props.navigation.getParam('data', {}),
-      smrData: {}
+      generalData: props.navigation.getParam('data', ''),
+      smrData: {},
+      dbAsmr: null,
+      dbCIP: null,
+      dbCompo: null,
+      dbCondition: null,
+      dbSmr: null,
+      dbAsmrLoaded: false,
+      dbCIPLoaded: false,
+      dbCompoLoaded: false,
+      dbConditionLoaded: false,
+      dbSmrLoaded: false
     };
   }
 
@@ -53,9 +63,9 @@ export default class MedocScreen extends React.Component {
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbAsmr.db');
-        //console.log('dbAsmr loaded');
-        this.fetchData(db, 'CIS_HAS_ASMR', 'asmrData');
+        var db = SQLite.openDatabase('dbAsmr.db')
+        this.setState({ dbAsmr: db, dbAsmrLoaded: true });
+        console.log('dbAsmr loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -67,9 +77,9 @@ export default class MedocScreen extends React.Component {
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbCIP.db');
-        //console.log('dbCIP loaded');
-        this.fetchData(db, 'CIP_CIS', 'cipData');
+        var db = SQLite.openDatabase('dbCIP.db')
+        this.setState({ dbCIP: db, dbCIPLoaded: true });
+        console.log('dbCIP loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -81,9 +91,9 @@ export default class MedocScreen extends React.Component {
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbCompo.db');
-        //console.log('dbCompo loaded');
-        this.fetchData(db, 'CIS_COMPO', 'compoData');
+        var db = SQLite.openDatabase('dbCompo.db')
+        this.setState({ dbCompo: db, dbCompoLoaded: true });
+        console.log('dbCompo loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -96,8 +106,22 @@ export default class MedocScreen extends React.Component {
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
         var db = SQLite.openDatabase('dbCondition.db')
-        //console.log('dbCondition loaded');
-        this.fetchData(db, 'CIS_CPD', 'conditionData');
+        this.setState({ dbCondition: db, dbConditionLoaded: true });
+        console.log('dbCondition loaded');
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+
+  loadDbGeneral = () => {
+    var base_uri = Asset.fromModule(require('../assets/database/dbGeneral.db')).uri;
+    var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
+    this.ensureFolderExists().then(() => {
+      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+        var db = SQLite.openDatabase('dbGeneral.db')
+        this.setState({ dbGeneral: db, dbGeneralLoaded: true });
+        console.log('dbGeneral loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -109,9 +133,9 @@ export default class MedocScreen extends React.Component {
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
     this.ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbSmr.db');
-        //console.log('dbSmr loaded');
-        this.fetchData(db, 'CIS_HAS_SMR', 'smrData');
+        var db = SQLite.openDatabase('dbSmr.db')
+        this.setState({ dbSmr: db, dbSmrLoaded: true });
+        console.log('dbSmr loaded');
       }).catch((err) => {
         console.log(err);
       });
@@ -127,23 +151,6 @@ export default class MedocScreen extends React.Component {
         return Promise.resolve(true)
       }
     })
-  }
-
-  fetchData = (db, dbName, storeName) => {
-    db.transaction(
-        tx => {
-          tx.executeSql(`SELECT * FROM `+dbName+` WHERE cis = ?`, [this.state.cis], (_, { rows }) => {
-            //console.log(JSON.stringify(rows))
-            if(rows.length >= 1) {
-              //console.log(rows);
-              this.state[storeName] = rows._array;
-            }
-          });
-        },
-        (err) => {
-          console.log("Failed Message", err);
-        }
-      );
   }
 
   render() {
