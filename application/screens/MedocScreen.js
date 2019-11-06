@@ -136,7 +136,7 @@ export default class MedocScreen extends React.Component {
             //console.log(JSON.stringify(rows))
             if(rows.length >= 1) {
               //console.log(rows);
-              this.state[storeName] = rows._array;
+              this.setState({[`${storeName}`]: rows._array[0] })
             }
           });
         },

@@ -128,9 +128,11 @@ export default class SearchScreen extends React.Component {
     }
   }
 
-  _deleteHistoric = () => {
-    AsyncStorage.clear();
-    this.setState({historic: []});
+  _deleteHistoric = async () => {
+    if(this.state.historic.length > 0) {
+      await AsyncStorage.clear();
+      this.setState({historic: []});
+    }
   }
 
   _onPress = (item) => {
@@ -222,7 +224,7 @@ export default class SearchScreen extends React.Component {
       }
     </View>
   );
-  
+
   render() {
     return (
       <Container style={{ flex: 1, backgroundColor: "#161a21"}}>

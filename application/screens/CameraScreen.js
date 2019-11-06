@@ -79,7 +79,9 @@ export default class CameraScreen extends React.Component {
             //console.log(JSON.stringify(rows))
             if(rows.length >= 1) {
               this.state.isRunning = false;
-              this.props.navigation.navigate('Medoc', {codeCIS: rows._array[0].cis, denomination: ''});
+              var item = rows._array[0];
+              var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
+              this.props.navigation.navigate('Medoc', {cis: item.cis, denomination: deno, data: item});
             } else {
               this.state.isRunning = false;
               this.setState({scanError: true});
