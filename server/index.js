@@ -27,9 +27,9 @@ function readLines(input, func, callback) {
   });
 }
 
-function readByCis(cis, db) {
+function readByCis(cis, db, name_db) {
   db.serialize(function() {
-    db.all("SELECT * FROM CIP_CIS WHERE cis = ?", cis, function(err, rows) {
+    db.all("SELECT * FROM "+name_db+" WHERE cis = ?", cis, function(err, rows) {
         rows.forEach(function (row) {
             console.log(row);
         });
@@ -123,15 +123,15 @@ function processGeneral(data) {
   });
 }
 
-function saveDataGeneral(arr) {
+function saveDataGeneral(arr, db, name_db) {
   //console.log('Length of the array : '+arr.length);
-  dbCIP.serialize(function() {
+  db.serialize(function() {
 
-    dbCIP.run("DROP TABLE IF EXISTS CIS_GENERAL");
+    db.run("DROP TABLE IF EXISTS "+name_db);
 
-    dbCIP.run("CREATE TABLE IF NOT EXISTS CIS_GENERAL (cis TEXT, denomination_medicament TEXT, forme_pharmaceutique TEXT, voies_administration TEXT, status_administratif TEXT, type_procedure_amm TEXT, etat_commercialisation TEXT, data_amm TEXT, statut_bdm TEXT, num_autorisation_europeenne TEXT, titulaires TEXT, surveillance_renforcee TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, denomination_medicament TEXT, forme_pharmaceutique TEXT, voies_administration TEXT, status_administratif TEXT, type_procedure_amm TEXT, etat_commercialisation TEXT, data_amm TEXT, statut_bdm TEXT, num_autorisation_europeenne TEXT, titulaires TEXT, surveillance_renforcee TEXT)");
 
-    var stmt = dbCIP.prepare("INSERT INTO CIS_GENERAL VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     for (var i = 0; i < arr.length; i++) {
         stmt.run(
@@ -152,9 +152,191 @@ function saveDataGeneral(arr) {
     stmt.finalize();
   });
 
-  dbCIP.close();
+  db.close();
 }
 
-readLines(inputGeneral, processGeneral, () => { saveDataGeneral(all_medoc); });
+//readLines(inputGeneral, processGeneral, () => { saveDataGeneral(general_medoc, dbGeneral, "CIS_GENERAL"); });
 
-readByCis("66057393", dbGeneral);
+readByCis("66057393", dbGeneral, "CIS_GENERAL");
+
+var inputCompo = fs.createReadStream('./data/CIS_COMPO_bdpm.txt');
+var dbCompo = new sqlite3.Database('data/dbCompo.db');
+var compo_medoc = [];
+
+function processCompo(data) {
+  var res = data.split("\t");
+  compo_medoc.push({
+    cis: res[0],
+    designation: res[1],
+    code: res[2],
+    denomination_substance: res[3],
+    dosage_substance: res[4],
+    ref_dosage: res[5],
+    nature_composant: res[6],
+    num_liaison: res[7]
+  });
+
+}
+
+function saveDataCompo(arr, db, name_db) {
+  //console.log('Length of the array : '+arr.length);
+  db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS "+name_db);
+
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, designation TEXT, code TEXT, denomination_substance TEXT, dosage_substance TEXT, ref_dosage TEXT, nature_composant TEXT, num_liaison TEXT)");
+
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+    for (var i = 0; i < arr.length; i++) {
+        stmt.run(
+          arr[i].cis,
+          arr[i].designation,
+          arr[i].code,
+          arr[i].denomination_substance,
+          arr[i].dosage_substance,
+          arr[i].ref_dosage,
+          arr[i].nature_composant,
+          arr[i].num_liaison
+        );
+    }
+    stmt.finalize();
+  });
+
+  db.close();
+}
+
+//readLines(inputCompo, processCompo, () => { saveDataCompo(compo_medoc, dbCompo, "CIS_COMPO"); });
+
+readByCis("66057393", dbCompo, "CIS_COMPO");
+
+var inputCondition = fs.createReadStream('./data/CIS_CPD_bdpm.txt');
+var dbCondition = new sqlite3.Database('data/dbCondition.db');
+var condition = [];
+
+function processCondition(data) {
+  var res = data.split("\t");
+  condition.push({
+    cis: res[0],
+    condition: res[1]
+  });
+
+}
+
+function saveDataCondition(arr, db, name_db) {
+  //console.log('Length of the array : '+arr.length);
+  db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS "+name_db);
+
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, condition TEXT)");
+
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?)");
+
+    for (var i = 0; i < arr.length; i++) {
+        stmt.run(
+          arr[i].cis,
+          arr[i].condition
+        );
+    }
+    stmt.finalize();
+  });
+
+  db.close();
+}
+
+//readLines(inputCondition, processCondition, () => { saveDataCondition(condition, dbCondition, "CIS_CPD"); });
+
+readByCis("65982247", dbCondition, "CIS_CPD");
+
+var inputAsmr = fs.createReadStream('./data/CIS_HAS_ASMR_bdpm.txt');
+var dbAsmr = new sqlite3.Database('data/dbAsmr.db');
+var asmr = [];
+
+function processAsmr(data) {
+  var res = data.split("\t");
+  asmr.push({
+    cis: res[0],
+    has: res[1],
+    motif_eval: res[2],
+    date_com_transparence: res[3],
+    valeur_asmr: res[4],
+    libelle_asmr: res[5]
+  });
+}
+
+function saveDataAsmr(arr, db, name_db) {
+  //console.log('Length of the array : '+arr.length);
+  db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS "+name_db);
+
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, has TEXT, motif_eval TEXT, date_com_transparence TEXT, valeur_asmr TEXT, libelle_asmr TEXT)");
+
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?, ?, ?, ?, ?)");
+
+    for (var i = 0; i < arr.length; i++) {
+        stmt.run(
+          arr[i].cis,
+          arr[i].has,
+          arr[i].motif_eval,
+          arr[i].date_com_transparence,
+          arr[i].valeur_asmr,
+          arr[i].libelle_asmr
+        );
+    }
+    stmt.finalize();
+  });
+
+  db.close();
+}
+
+//readLines(inputAsmr, processAsmr, () => { saveDataAsmr(asmr, dbAsmr, "CIS_HAS_ASMR"); });
+
+readByCis("65071397", dbAsmr, "CIS_HAS_ASMR");
+
+var inputSmr = fs.createReadStream('./data/CIS_HAS_SMR_bdpm.txt');
+var dbSmr = new sqlite3.Database('data/dbSmr.db');
+var smr = [];
+
+function processSmr(data) {
+  var res = data.split("\t");
+  smr.push({
+    cis: res[0],
+    has: res[1],
+    motif_eval: res[2],
+    date_com_transparence: res[3],
+    valeur_smr: res[4],
+    libelle_smr: res[5]
+  });
+}
+
+function saveDataSmr(arr, db, name_db) {
+  //console.log('Length of the array : '+arr.length);
+  db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS "+name_db);
+
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, has TEXT, motif_eval TEXT, date_com_transparence TEXT, valeur_smr TEXT, libelle_smr TEXT)");
+
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?, ?, ?, ?, ?)");
+
+    for (var i = 0; i < arr.length; i++) {
+        stmt.run(
+          arr[i].cis,
+          arr[i].has,
+          arr[i].motif_eval,
+          arr[i].date_com_transparence,
+          arr[i].valeur_smr,
+          arr[i].libelle_smr
+        );
+    }
+    stmt.finalize();
+  });
+
+  db.close();
+}
+
+//readLines(inputSmr, processSmr, () => { saveDataSmr(smr, dbSmr, "CIS_HAS_SMR"); });
+
+readByCis("66393935", dbSmr, "CIS_HAS_SMR");
