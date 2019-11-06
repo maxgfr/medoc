@@ -51,7 +51,7 @@ export default class SearchScreen extends React.Component {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
         var db = SQLite.openDatabase('dbGeneral.db')
         this.setState({ dbGeneral: db, dbGeneralLoaded: true });
-        console.log('dbGeneral loaded');
+        //console.log('dbGeneral loaded');
       }).catch((err) => {
         console.log(err);
       });
