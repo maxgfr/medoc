@@ -1,8 +1,8 @@
 // MAJ 03/06
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('data/db.db');
 var fs = require('fs');
-var input = fs.createReadStream('./data/CIS_CIP_bdpm.txt');
+var inputCIP = fs.createReadStream('./data/CIS_CIP_bdpm.txt');
+var dbCIP = new sqlite3.Database('data/dbCIP.db');
 var all_medoc = [];
 
 function readLines(input, func, callback) {
@@ -27,59 +27,65 @@ function readLines(input, func, callback) {
   });
 }
 
-function process(data) {
+function processCIP(data) {
   var res = data.split("\t");
   all_medoc.push({
     cis: res[0],
     cip7: res[1],
-    cip13: res[6]
+    libelle_pres: res[2],
+    status_administratif: res[3],
+    etat_commercialisation: res[4],
+    date_decla_commercialisation: res[5],
+    cip13: res[6],
+    agrement_collectivite: res[7],
+    taux_remboursement: res[8],
+    prix_medicament: res[9],
+    indication_droit_remboursement: res[10]
   });
 }
 
-function saveData(arr) {
+function saveDataCIP(arr) {
   //console.log('Length of the array : '+arr.length);
-  db.serialize(function() {
+  dbCIP.serialize(function() {
 
-    db.run("DROP TABLE IF EXISTS CIP_CIS");
+    dbCIP.run("DROP TABLE IF EXISTS CIP_CIS");
 
-    db.run("CREATE TABLE IF NOT EXISTS CIP_CIS (cis TEXT, cip7 TEXT, cip13 TEXT)");
+    dbCIP.run("CREATE TABLE IF NOT EXISTS CIP_CIS (cis TEXT, cip7 TEXT, libelle_pres TEXT, status_administratif TEXT, etat_commercialisation TEXT, date_decla_commercialisation TEXT, cip13 TEXT, agrement_collectivite TEXT, taux_remboursement TEXT, prix_medicament TEXT, indication_droit_remboursement TEXT)");
 
-    var stmt = db.prepare("INSERT INTO CIP_CIS VALUES (?, ?, ?)");
+    var stmt = dbCIP.prepare("INSERT INTO CIP_CIS VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     for (var i = 0; i < arr.length; i++) {
-        stmt.run(arr[i].cis, arr[i].cip7, arr[i].cip13);
+        stmt.run(
+          arr[i].cis,
+          arr[i].cip7,
+          arr[i].libelle_pres,
+          arr[i].status_administratif,
+          arr[i].etat_commercialisation,
+          arr[i].date_decla_commercialisation,
+          arr[i].cip13,
+          arr[i].agrement_collectivite,
+          arr[i].taux_remboursement,
+          arr[i].prix_medicament,
+          arr[i].indication_droit_remboursement
+        );
     }
-
     stmt.finalize();
   });
 
-  db.close();
-}
-
-function readAllData() {
-  db.serialize(function() {
-    db.all("SELECT rowid AS id, cis, cip7, cip13 FROM CIP_CIS", function(err, rows) {
-        rows.forEach(function (row) {
-            console.log(row.id + ": " + row.cis + " - " + row.cip7 + " - " + row.cip13);
-        });
-    });
-  });
-  db.close();
+  dbCIP.close();
 }
 
 function readByCip13(cip13) {
-  db.serialize(function() {
-    db.all("SELECT cis FROM CIP_CIS WHERE cip13 = ?", cip13, function(err, rows) {
+  dbCIP.serialize(function() {
+    dbCIP.all("SELECT cis FROM CIP_CIS WHERE cip13 = ?", cip13, function(err, rows) {
         rows.forEach(function (row) {
             console.log(row.cis);
         });
     });
   });
-  db.close();
+  dbCIP.close();
 }
 
-readLines(input, process, () => { saveData(all_medoc); });
+//readLines(inputCIP, processCIP, () => { saveDataCIP(all_medoc); });
 
-//readAllData();
-
-//readByCip13("3400933254063");
+readByCip13("3400933254063");
