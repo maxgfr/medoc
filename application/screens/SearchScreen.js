@@ -31,11 +31,34 @@ export default class SearchScreen extends React.Component {
   state = {
     search: '',
     result: [],
-    historic: []
+    historic: [],
+    db: null,
+    dbLoaded: false
   };
 
   async componentDidMount() {
     await this.getHistoric();
+    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
+    var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
+    this.ensureFolderExists().then(() => {
+      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+        var db = SQLite.openDatabase('my_db.db')
+        this.setState({ db: db, dbLoaded: true });
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+
+  ensureFolderExists = () => {
+    const path = `${FileSystem.documentDirectory}SQLite`
+    return FileSystem.getInfoAsync(path).then(({exists}) => {
+      if (!exists) {
+        return FileSystem.makeDirectoryAsync(path)
+      } else {
+        return Promise.resolve(true)
+      }
+    })
   }
 
   updateSearch = async (search) => {

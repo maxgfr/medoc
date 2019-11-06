@@ -28,7 +28,9 @@ export default class MedocScreen extends React.Component {
     this.state = {
       cis: props.navigation.getParam('codeCIS', ''),
       denomination: props.navigation.getParam('denomination', ''),
-      medoc: {}
+      medoc: {},
+      db: null,
+      dbLoaded: false
     };
   }
 
@@ -45,6 +47,31 @@ export default class MedocScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    var base_uri = Asset.fromModule(require('../assets/database/db.db')).uri;
+    var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
+    this.ensureFolderExists().then(() => {
+      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+        var db = SQLite.openDatabase('my_db.db')
+        this.setState({ db: db, dbLoaded: true });
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+
+  ensureFolderExists = () => {
+    const path = `${FileSystem.documentDirectory}SQLite`
+    return FileSystem.getInfoAsync(path).then(({exists}) => {
+      if (!exists) {
+        return FileSystem.makeDirectoryAsync(path)
+      } else {
+        return Promise.resolve(true)
+      }
+    })
+  }
+
+  /*
   processResponse = (resp) => {
     var matches = resp.indicationsTherapeutiques.match(/\bhttps?:\/\/\S+/gi);
     var text_without_link = this.urlify(resp.indicationsTherapeutiques);
@@ -64,6 +91,7 @@ export default class MedocScreen extends React.Component {
     var urlRegex = /<\/?[^>]+(>|$)/g;
     return text.replace(urlRegex, "")
   }
+  */
 
   render() {
     return (
