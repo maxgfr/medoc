@@ -79,6 +79,9 @@ export default class Medocomponent extends Component {
                 <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12 }}>Condition de prescription{this.props.conditionData.condition}</Text>
                 : null
               }
+              <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Code CIS : {this.props.generalData.cis}</Text>
+              <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Code CIP7 : {this.props.generalData.cip7}</Text>
+              <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Code CIP13 : {this.props.generalData.cip13}</Text>
             </View>
 
             <View style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
