@@ -5,10 +5,7 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import * as SQLite from 'expo-sqlite';
 import {
   Container,
   Header,
@@ -19,8 +16,11 @@ import {
   Button,
   Icon
 } from 'native-base';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { searchByCip13 } from '../redux/action/AppActions';
 
-export default class CameraScreen extends React.Component {
+class CameraScreen extends React.Component {
 
   static navigationOptions = {
     header: null,
@@ -29,71 +29,31 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      codeCIS: '',
-      scanError: false,
-      isRunning: false,
-      db: null,
-      dbLoaded: false
+      scanLocalError: false
     };
   }
 
-  componentDidMount() {
-    var base_uri = Asset.fromModule(require('../assets/database/dbCIP.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/my_db.db`;
-    this.ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('my_db.db')
-        this.setState({ db: db, dbLoaded: true });
-      }).catch((err) => {
-        console.log(err);
-      });
-    });
-  }
-
-  ensureFolderExists = () => {
-    const path = `${FileSystem.documentDirectory}SQLite`
-    return FileSystem.getInfoAsync(path).then(({exists}) => {
-      if (!exists) {
-        return FileSystem.makeDirectoryAsync(path)
-      } else {
-        return Promise.resolve(true)
-      }
-    })
-  }
 
   handleBarCodeScanned = ({ type, data }) => {
     //console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    var loaded = this.props.app.dbAsmrLoaded
+                && this.props.app.dbCIPLoaded
+                && this.props.app.dbCompoLoaded
+                && this.props.app.dbConditionLoaded
+                && this.props.app.dbGeneralLoaded
+                && this.props.app.dbInfoLoaded
+                && this.props.app.dbSmrLoaded;
     if(type == "org.iso.DataMatrix" || type == "16") {
       data = data.substring(4,17);
       //console.log(data);
     }
-    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.state.isRunning && !this.state.dbLoaded && data.length != 13) {
-      this.setState({scanError: true});
+    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.props.app.isRunning && this.props.app.scanError && !loaded && data.length != 13) {
+      this.setState({scanLocalError: true});
       return;
     }
-    this.state.isRunning = true;
-    this.setState({scanError: false, isRunning: true});
-    this.state.db.transaction(
-        tx => {
-          tx.executeSql(`SELECT cis FROM CIP_CIS WHERE cip13 = ?`, [data], (_, { rows }) => {
-            //console.log(JSON.stringify(rows))
-            if(rows.length >= 1) {
-              this.state.isRunning = false;
-              var item = rows._array[0];
-              var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
-              this.props.navigation.navigate('Medoc', {cis: item.cis, denomination: deno, data: item});
-            } else {
-              this.state.isRunning = false;
-              this.setState({scanError: true});
-            }
-          });
-        },
-        (err) => {
-          console.log("Failed Message", err);
-          this.state.isRunning = false;
-          this.setState({scanError: true});
-        }
-      );
+    this.setState({scanLocalError: false});
+    this.props.searchByCip13(this.props.app.dbCIP, data);
+    this.props.navigation.navigate('Medoc');
   };
 
   render() {
@@ -118,9 +78,9 @@ export default class CameraScreen extends React.Component {
             <View style={styles.layerRight} />
           </View>
           {
-            this.state.scanError ?
+            this.state.scanLocalError ?
             <View style={styles.layerBottom}>
-              <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: 'rgba(0, 0, 0, .6)', alignItems: 'center', justifyContent : 'center', alignSelf: 'center'}} onPress={() => this.setState({ scanError: false })} >
+              <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: 'rgba(0, 0, 0, .6)', alignItems: 'center', justifyContent : 'center', alignSelf: 'center'}} onPress={() => this.setState({ scanLocalError: false })} >
                 <Text style={{fontSize: 15,  color: '#307fff', textAlign: 'center'}}>Code-barres invalide. Veuillez rescanner le code-barres</Text>
               </View>
             </View>
@@ -170,3 +130,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+const mapStateToProps = (state) => {
+  const { app } = state
+  return { app }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    searchByCip13
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CameraScreen);

@@ -340,3 +340,45 @@ function saveDataSmr(arr, db, name_db) {
 //readLines(inputSmr, processSmr, () => { saveDataSmr(smr, dbSmr, "CIS_HAS_SMR"); });
 
 readByCis("66393935", dbSmr, "CIS_HAS_SMR");
+
+var inputInfo = fs.createReadStream('./data/CIS_InfoImportantes_20191002092032_bdpm.txt');
+var dbInfo = new sqlite3.Database('data/dbInfo.db');
+var infos = [];
+
+function processInfo(data) {
+  var res = data.split("\t");
+  infos.push({
+    cis: res[0],
+    from_date: res[1],
+    to_date: res[2],
+    text: res[3]
+  });
+}
+
+function saveDataInfo(arr, db, name_db) {
+  //console.log('Length of the array : '+arr.length);
+  db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS "+name_db);
+
+    db.run("CREATE TABLE IF NOT EXISTS "+name_db+" (cis TEXT, from_date TEXT, to_date TEXT, text TEXT)");
+
+    var stmt = db.prepare("INSERT INTO "+name_db+" VALUES (?, ?, ?, ?)");
+
+    for (var i = 0; i < arr.length; i++) {
+        stmt.run(
+          arr[i].cis,
+          arr[i].from_date,
+          arr[i].to_date,
+          arr[i].text
+        );
+    }
+    stmt.finalize();
+  });
+
+  db.close();
+}
+
+//readLines(inputInfo, processInfo, () => { saveDataInfo(infos, dbInfo, "CIS_InfoImportantes"); });
+
+readByCis("60004971", dbInfo, "CIS_InfoImportantes");
