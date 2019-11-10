@@ -11,7 +11,7 @@ const done = (type, payload) => (
 );
 
 export const loadDbAsmr = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbAsmr.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
     ensureFolderExists().then(() => {
@@ -27,7 +27,7 @@ export const loadDbAsmr = () => {
 }
 
 export const loadDbCIP = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbCIP.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
     ensureFolderExists().then(() => {
@@ -43,7 +43,7 @@ export const loadDbCIP = () => {
 }
 
 export const loadDbCompo = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbCompo.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
     ensureFolderExists().then(() => {
@@ -59,7 +59,7 @@ export const loadDbCompo = () => {
 }
 
 export const loadDbCondition = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbCondition.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCondition.db`;
     ensureFolderExists().then(() => {
@@ -75,7 +75,7 @@ export const loadDbCondition = () => {
 }
 
 export const loadDbGeneral = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbGeneral.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
     ensureFolderExists().then(() => {
@@ -92,7 +92,7 @@ export const loadDbGeneral = () => {
 }
 
 export const loadDbInfo = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbInfo.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbInfo.db`;
     ensureFolderExists().then(() => {
@@ -109,7 +109,7 @@ export const loadDbInfo = () => {
 }
 
 export const loadDbSmr = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../assets/database/dbSmr.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
     ensureFolderExists().then(() => {
@@ -125,7 +125,7 @@ export const loadDbSmr = () => {
 }
 
 export const searchByDeno = (db, name) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(done('SEARCH_BY_DENO', {isSearching: true, data: [], denomination: '' }));
     db.transaction(
         tx => {
@@ -153,7 +153,7 @@ export const searchByDeno = (db, name) => {
 }
 
 export const searchByCip13 = (db, cip13) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: false, isRunning: true}));
     db.transaction(
         tx => {
@@ -181,7 +181,7 @@ export const searchByCip13 = (db, cip13) => {
 }
 
 export const getHistoric = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       const myArray = await AsyncStorage.getItem('@historique');
       if (myArray !== null) {
@@ -195,7 +195,7 @@ export const getHistoric = () => {
 }
 
 export const setHistoric = (item, currentHistoric) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     var array = currentHistoric;
     for (var i = 0; i < array.length; i++) {
         if (array[i].cis === item.cis) {
@@ -216,7 +216,7 @@ export const setHistoric = (item, currentHistoric) => {
 }
 
 export const deleteHistoric = (currentHistoric) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       if(currentHistoric.length > 0) {
         await AsyncStorage.clear();
@@ -229,7 +229,7 @@ export const deleteHistoric = (currentHistoric) => {
 }
 
 fetchData (db, dbName, storeName, cis) {
-  return dispatch => {
+  return (dispatch, getState) => {
     db.transaction(
         tx => {
           tx.executeSql(`SELECT * FROM `+dbName+` WHERE cis = ?`, [cis], (_, { rows }) => {
