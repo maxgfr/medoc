@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import appReducer from './redux/reducer/AppReducer';
 
 import AppNavigator from './navigation/AppNavigator';
 
-
-const store = createStore(appReducer);
+const store = createStore(appReducer, applyMiddleware(thunk));
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
