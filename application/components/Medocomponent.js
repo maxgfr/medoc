@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    TouchableWithoutFeedback,
     Dimensions
 } from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 import {
     Button
 } from "native-base";
-import Autolink from 'react-native-autolink';
+import Textml from './Textml';
 
 export default class Medocomponent extends Component {
+
+    _onPress = (data) => {
+      //console.log(data);
+      WebBrowser.openBrowserAsync(data);
+    }
 
     render() {
         return (
@@ -87,21 +91,7 @@ export default class Medocomponent extends Component {
                   <View key={index} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
                     <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Informations importantes</Text>
                     { item.from_date && item.to_date ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Du {item.from_date} au {item.to_date} </Text> : null }
-                    { item.text ?
-                      <Autolink
-                        text={item.text}
-                        mention="twitter"
-                        phone={false}
-                        email={false}
-                        onPress={(url, match) => {
-                          if(match.url) {
-                            WebBrowser.openBrowserAsync(match.url)
-                          }
-                        }}
-                        linkStyle={{ color:'#172061' , fontWeight:'bold'}}
-                        numberOfLines={null}
-                        style={{color: '#e3e4e8', fontSize: 15, marginTop: 5}}/>
-                        : null }
+                    { item.text? <Textml style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }} data={item.text} onPress={this._onPress}/> : null }
                   </View>
                 );
               })}
@@ -110,21 +100,7 @@ export default class Medocomponent extends Component {
                 return (
                   <View key={index} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
                     <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Condition de prescriptions</Text>
-                    { item.condition ?
-                      <Autolink
-                        text={item.condition}
-                        mention="twitter"
-                        phone={false}
-                        email={false}
-                        onPress={(url, match) => {
-                          if(match.url) {
-                            WebBrowser.openBrowserAsync(match.url)
-                          }
-                        }}
-                        linkStyle={{ color:'#172061' , fontWeight:'bold'}}
-                        numberOfLines={null}
-                        style={{color: '#e3e4e8', fontSize: 15, marginTop: 5}}/>
-                        : null }
+                    { item.condition ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>{item.condition}</Text> : null }
                   </View>
                 );
               })}
@@ -136,21 +112,7 @@ export default class Medocomponent extends Component {
                     { item.has ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Code de dossier HAS : {item.has}</Text> : null }
                     { item.motif_eval ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Motif d'évaluation : {item.motif_eval}</Text> : null }
                     { item.valeur_smr ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Valeur du SMR : {item.valeur_smr}</Text> : null }
-                    { item.libelle_smr ?
-                      <Autolink
-                        text={item.libelle_smr}
-                        mention="twitter"
-                        phone={false}
-                        email={false}
-                        onPress={(url, match) => {
-                          if(match.url) {
-                            WebBrowser.openBrowserAsync(match.url)
-                          }
-                        }}
-                        linkStyle={{ color:'#172061' , fontWeight:'bold'}}
-                        numberOfLines={null}
-                        style={{color: '#e3e4e8', fontSize: 15, marginTop: 5}}/>
-                        : null }
+                    { item.libelle_smr ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>{item.libelle_smr}</Text> : null }
                   </View>
                 );
               })}
@@ -162,21 +124,7 @@ export default class Medocomponent extends Component {
                       { item.has ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Code de dossier HAS : {item.has}</Text> : null }
                       { item.motif_eval ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Motif d'évaluation : {item.motif_eval}</Text> : null }
                       { item.valeur_smr ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Valeur du ASMR : {item.valeur_asmr}</Text> : null }
-                      { item.libelle_asmr ?
-                        <Autolink
-                          text={item.libelle_asmr}
-                          mention="twitter"
-                          phone={false}
-                          email={false}
-                          onPress={(url, match) => {
-                            if(match.url) {
-                              WebBrowser.openBrowserAsync(match.url)
-                            }
-                          }}
-                          linkStyle={{ color:'#172061' , fontWeight:'bold'}}
-                          numberOfLines={null}
-                          style={{color: '#e3e4e8', fontSize: 15, marginTop: 5}}/>
-                          : null }
+                      { item.libelle_asmr ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>{item.libelle_asmr}</Text> : null }
                     </View>
                   );
                 })}

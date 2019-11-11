@@ -102,6 +102,22 @@ const appReducer = (state = INITIAL_STATE, action) => {
         ...state,
         searchData: []
       };
+    case 'SET_DENO':
+      return {
+        ...state,
+        denomination: action.payload.denomination
+      };
+    case 'INIT_DATA':
+      return {
+        ...state,
+        asmrData: [],
+        cipData: [],
+        compoData: [],
+        conditionData: [],
+        generalData: [],
+        infoData: [],
+        smrData: []
+      };
     default:
       return state;
   }

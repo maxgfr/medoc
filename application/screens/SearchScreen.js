@@ -76,9 +76,8 @@ class SearchScreen extends React.Component {
   }
 
   _onPress = (item) => {
-    this.props.fillData(item.cis);
+    this.props.fillData(item.cis, item.denomination_medicament);
     this.props.setHistoric(item, this.props.app.historic);
-    var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
     this.props.navigation.navigate('Medoc');
   }
 

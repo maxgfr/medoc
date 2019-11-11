@@ -14,16 +14,20 @@ function readLines(input, func, callback) {
     while (index > -1) {
       var line = remaining.substring(0, index);
       remaining = remaining.substring(index + 1);
-      func(line);
+      line = removeAccents(line);
+      console.log(line);
+      //
+      //func(line);
+      return;
       index = remaining.indexOf('\n');
     }
   });
 
   input.on('end', function() {
     if (remaining.length > 0) {
-      func(remaining);
+      //func(remaining);
     }
-    callback();
+    //callback();
   });
 }
 
@@ -99,7 +103,7 @@ function saveDataCIP(arr) {
 
 //readLines(inputCIP, processCIP, () => { saveDataCIP(all_medoc); });
 
-readByCip13("3400933254063", dbCIP);
+//readByCip13("3400933254063", dbCIP);
 
 var inputGeneral = fs.createReadStream('./data/CIS_bdpm.txt');
 var dbGeneral = new sqlite3.Database('data/dbGeneral.db');
@@ -157,7 +161,7 @@ function saveDataGeneral(arr, db, name_db) {
 
 //readLines(inputGeneral, processGeneral, () => { saveDataGeneral(general_medoc, dbGeneral, "CIS_GENERAL"); });
 
-readByCis("66057393", dbGeneral, "CIS_GENERAL");
+//readByCis("66057393", dbGeneral, "CIS_GENERAL");
 
 var inputCompo = fs.createReadStream('./data/CIS_COMPO_bdpm.txt');
 var dbCompo = new sqlite3.Database('data/dbCompo.db');
@@ -208,7 +212,7 @@ function saveDataCompo(arr, db, name_db) {
 
 //readLines(inputCompo, processCompo, () => { saveDataCompo(compo_medoc, dbCompo, "CIS_COMPO"); });
 
-readByCis("66057393", dbCompo, "CIS_COMPO");
+//readByCis("66057393", dbCompo, "CIS_COMPO");
 
 var inputCondition = fs.createReadStream('./data/CIS_CPD_bdpm.txt');
 var dbCondition = new sqlite3.Database('data/dbCondition.db');
@@ -247,7 +251,7 @@ function saveDataCondition(arr, db, name_db) {
 
 //readLines(inputCondition, processCondition, () => { saveDataCondition(condition, dbCondition, "CIS_CPD"); });
 
-readByCis("65982247", dbCondition, "CIS_CPD");
+//readByCis("65982247", dbCondition, "CIS_CPD");
 
 var inputAsmr = fs.createReadStream('./data/CIS_HAS_ASMR_bdpm.txt');
 var dbAsmr = new sqlite3.Database('data/dbAsmr.db');
@@ -293,7 +297,7 @@ function saveDataAsmr(arr, db, name_db) {
 
 //readLines(inputAsmr, processAsmr, () => { saveDataAsmr(asmr, dbAsmr, "CIS_HAS_ASMR"); });
 
-readByCis("65071397", dbAsmr, "CIS_HAS_ASMR");
+//readByCis("65071397", dbAsmr, "CIS_HAS_ASMR");
 
 var inputSmr = fs.createReadStream('./data/CIS_HAS_SMR_bdpm.txt');
 var dbSmr = new sqlite3.Database('data/dbSmr.db');
@@ -339,7 +343,7 @@ function saveDataSmr(arr, db, name_db) {
 
 //readLines(inputSmr, processSmr, () => { saveDataSmr(smr, dbSmr, "CIS_HAS_SMR"); });
 
-readByCis("66393935", dbSmr, "CIS_HAS_SMR");
+//readByCis("66393935", dbSmr, "CIS_HAS_SMR");
 
 var inputInfo = fs.createReadStream('./data/CIS_InfoImportantes_20191002092032_bdpm.txt');
 var dbInfo = new sqlite3.Database('data/dbInfo.db');
@@ -379,6 +383,6 @@ function saveDataInfo(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputInfo, processInfo, () => { saveDataInfo(infos, dbInfo, "CIS_InfoImportantes"); });
+readLines(inputInfo, processInfo, () => { saveDataInfo(infos, dbInfo, "CIS_InfoImportantes"); });
 
-readByCis("60004971", dbInfo, "CIS_InfoImportantes");
+//readByCis("60004971", dbInfo, "CIS_InfoImportantes");

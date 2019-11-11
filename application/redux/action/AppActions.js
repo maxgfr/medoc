@@ -152,9 +152,11 @@ export const searchByDeno = (db, name) => {
   }
 };
 
-export const fillData = (cis) => {
+export const fillData = (cis, dn) => {
   return (dispatch, getState) => {
     //console.log(getState());
+    var deno = dn.substr(0, dn.indexOf(','));
+    dispatch(done('SET_DENO', {denomination: deno }));
     var appReducer = getState().app;
     fetchData (appReducer.dbAsmr, 'CIS_HAS_ASMR', 'asmrData', cis, dispatch);
     fetchData (appReducer.dbCIP, 'CIP_CIS', 'cipData', cis, dispatch);
@@ -168,14 +170,15 @@ export const fillData = (cis) => {
 
 export const searchByCip13 = (db, cip13) => {
   return (dispatch, getState) => {
-    dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: false, isRunning: true}));
+    //dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: false, isRunning: true}));
+    //dispatch(done('INIT_DATA', {}));
     db.transaction(
         tx => {
-          tx.executeSql(`SELECT cis FROM CIP_CIS WHERE cip13 = ?`, [cip13], (_, { rows }) => {
+          tx.executeSql(`SELECT * FROM CIP_CIS WHERE cip13 = ?`, [cip13], (_, { rows }) => {
             //console.log(JSON.stringify(rows))
             if(rows.length >= 1) {
               //console.log(rows);
-              var deno = rows._array[0].denomination_medicament.substr(0, rows._array[0].denomination_medicament.indexOf(','));
+              dispatch(done('SET_DENO', {denomination: "SCAN" }));
               dispatch(done('SEARCH_BY_CIP13', {data: rows._array, scanError: false, isRunning: false}));
               var appReducer = getState().app;
               fetchData (appReducer.dbAsmr, 'CIS_HAS_ASMR', 'asmrData', rows._array[0].cis, dispatch);
@@ -184,8 +187,6 @@ export const searchByCip13 = (db, cip13) => {
               fetchData (appReducer.dbGeneral, 'CIS_GENERAL', 'generalData', rows._array[0].cis, dispatch);
               fetchData (appReducer.dbInfo, 'CIS_InfoImportantes', 'infoData', rows._array[0].cis, dispatch);
               fetchData (appReducer.dbSmr, 'CIS_HAS_SMR', 'smrData', rows._array[0].cis, dispatch);
-            } else {
-              dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: true, isRunning: false}));
             }
           });
         },
