@@ -262,7 +262,8 @@ var fetchData = (db, dbName, storeName, cis, dispatch) => {
         tx.executeSql(`SELECT * FROM `+dbName+` WHERE cis = ?`, [cis], (_, { rows }) => {
           //console.log(JSON.stringify(rows))
           if(rows.length >= 1) {
-            //console.log(rows);
+            console.log(storeName);
+            console.log(rows._array);
             dispatch(done('FETCH_DATA',{storeName: storeName, data: rows._array}));
           }
         });

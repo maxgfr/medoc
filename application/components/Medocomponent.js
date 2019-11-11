@@ -30,7 +30,7 @@ export default class Medocomponent extends Component {
 
             <View style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
               <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold'}}>Général</Text>
-              <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12 }}>Nom : {this.props.generalData[0]}</Text>
+              <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 12 }}>Nom : {this.props.generalData[0].cis}</Text>
 
             </View>
           </View>
