@@ -16,34 +16,35 @@ export default class Medocomponent extends Component {
     render() {
         return (
           <View>
-            <View style={{flexDirection: 'row', justifyContent:'center', margin: 6}}>
-              <Button style={{color: '#3028c9', justifyContent: 'center', width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!info-'+item.cis)}}>
-                <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>Informations</Text>
-              </Button>
-              <Button style={{color: '#3028c9', justifyContent: 'center', marginHorizontal: 10, width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!rcp-'+item.cis+'-0')}}>
-                <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold', textAlign: 'center' }}>Caractéristiques</Text>
-              </Button>
-              <Button style={{color: '#3028c9', justifyContent: 'center', width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!notice-'+item.cis+'-0')}}>
-                <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>Notice</Text>
-              </Button>
-            </View>
-
             { this.props.generalData.map((item, index) => {
                 return (
-                  <View key={index} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
-                    <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Général</Text>
-                    { item.denomination_medicament ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Nom : {item.denomination_medicament}</Text> : null }
-                    { item.forme_pharmaceutique ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Forme pharmaceutique : {item.forme_pharmaceutique}</Text> : null }
-                    { item.voies_administration ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Voies d'administration : {item.voies_administration}</Text> : null }
-                    { item.status_administratif ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Status administratif de l’autorisation de mise sur le marché : {item.status_administratif}</Text> : null }
-                    { item.type_procedure_amm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Type de procédure d'autorisation de mise sur le marché : {item.type_procedure_amm}</Text> : null }
-                    { item.etat_commercialisation ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Etat de commercialisation : {item.etat_commercialisation}</Text> : null }
-                    { item.data_amm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Date AMM : {item.data_amm}</Text> : null }
-                    { item.statut_bdm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Status BDM : {item.statut_bdm}</Text> : null }
-                    { item.num_autorisation_europeenne ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Numéro de l’autorisation européenne : {item.num_autorisation_europeenne}</Text> : null }
-                    { item.titulaires ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Titulaires: {item.titulaires}</Text> : null }
-                    { item.surveillance_renforcee ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Surveillance renforcée : {item.surveillance_renforcee}</Text> : null }
-                  </View>
+                  <React.Fragment key={index}>
+                    <View style={{flexDirection: 'row', justifyContent:'center', margin: 6}}>
+                      <Button style={{color: '#3028c9', justifyContent: 'center', width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!info-'+this.props.generalData.cis)}}>
+                        <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>Informations</Text>
+                      </Button>
+                      <Button style={{color: '#3028c9', justifyContent: 'center', marginHorizontal: 10, width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!rcp-'+this.props.generalData.cis+'-0')}}>
+                        <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold', textAlign: 'center' }}>Caractéristiques</Text>
+                      </Button>
+                      <Button style={{color: '#3028c9', justifyContent: 'center', width: Dimensions.get('window').width / 3.5}} onPress={() => {WebBrowser.openBrowserAsync('http://m.base-donnees-publique.medicaments.gouv.fr/#!notice-'+this.props.generalData.cis+'-0')}}>
+                        <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold' }}>Notice</Text>
+                      </Button>
+                    </View>
+                    <View style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
+                      <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Général</Text>
+                      { item.denomination_medicament ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Nom : {item.denomination_medicament}</Text> : null }
+                      { item.forme_pharmaceutique ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Forme pharmaceutique : {item.forme_pharmaceutique}</Text> : null }
+                      { item.voies_administration ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Voies d'administration : {item.voies_administration}</Text> : null }
+                      { item.status_administratif ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Status administratif de l’autorisation de mise sur le marché : {item.status_administratif}</Text> : null }
+                      { item.type_procedure_amm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Type de procédure d'autorisation de mise sur le marché : {item.type_procedure_amm}</Text> : null }
+                      { item.etat_commercialisation ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Etat de commercialisation : {item.etat_commercialisation}</Text> : null }
+                      { item.data_amm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Date AMM : {item.data_amm}</Text> : null }
+                      { item.statut_bdm ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Status BDM : {item.statut_bdm}</Text> : null }
+                      { item.num_autorisation_europeenne ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Numéro de l’autorisation européenne : {item.num_autorisation_europeenne}</Text> : null }
+                      { item.titulaires ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Titulaires: {item.titulaires}</Text> : null }
+                      { item.surveillance_renforcee ? <Text style={{color: '#e3e4e8', fontSize: 15, marginTop: 5 }}>Surveillance renforcée : {item.surveillance_renforcee}</Text> : null }
+                    </View>
+                  </React.Fragment>
                 );
               })}
 
