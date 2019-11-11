@@ -12,7 +12,7 @@ const done = (type, payload) => (
 
 export const loadDbAsmr = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbAsmr.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbAsmr.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
@@ -24,11 +24,11 @@ export const loadDbAsmr = () => {
       });
     });
   }
-}
+};
 
 export const loadDbCIP = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbCIP.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbCIP.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
@@ -40,11 +40,11 @@ export const loadDbCIP = () => {
       });
     });
   }
-}
+};
 
 export const loadDbCompo = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbCompo.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbCompo.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
@@ -56,11 +56,11 @@ export const loadDbCompo = () => {
       });
     });
   }
-}
+};
 
 export const loadDbCondition = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbCondition.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbCondition.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbCondition.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
@@ -72,16 +72,15 @@ export const loadDbCondition = () => {
       });
     });
   }
-}
+};
 
 export const loadDbGeneral = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbGeneral.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbGeneral.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
         var db = SQLite.openDatabase('dbGeneral.db')
-        this.setState({ dbGeneral: db, dbGeneralLoaded: true });
         //console.log('dbGeneral loaded');
         dispatch(done('LOAD_DB_GENERAL', {db: db, dbLoaded: true}));
       }).catch((err) => {
@@ -89,16 +88,15 @@ export const loadDbGeneral = () => {
       });
     });
   }
-}
+};
 
 export const loadDbInfo = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbInfo.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbInfo.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbInfo.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
         var db = SQLite.openDatabase('dbInfo.db')
-        this.setState({ dbInfo: db, dbInfoLoaded: true });
         //console.log('dbGeneral loaded');
         dispatch(done('LOAD_DB_INFO', {db: db, dbLoaded: true}));
       }).catch((err) => {
@@ -106,11 +104,11 @@ export const loadDbInfo = () => {
       });
     });
   }
-}
+};
 
 export const loadDbSmr = () => {
   return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../assets/database/dbSmr.db')).uri;
+    var base_uri = Asset.fromModule(require('../../assets/database/dbSmr.db')).uri;
     var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
     ensureFolderExists().then(() => {
       FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
@@ -122,7 +120,7 @@ export const loadDbSmr = () => {
       });
     });
   }
-}
+};
 
 export const searchByDeno = (db, name) => {
   return (dispatch, getState) => {
@@ -135,12 +133,6 @@ export const searchByDeno = (db, name) => {
               //console.log(rows);
               var deno = rows._array[0].denomination_medicament.substr(0, rows._array[0].denomination_medicament.indexOf(','));
               dispatch(done('SEARCH_BY_DENO', {isSearching: false, data: rows._array, denomination: deno }));
-              fetchData (db, 'CIS_HAS_ASMR', 'asmrData', rows._array[0].cis);
-              fetchData (db, 'CIP_CIS', 'cipData', rows._array[0].cis);
-              fetchData (db, 'CIS_COMPO', 'compoData', rows._array[0].cis);
-              fetchData (db, 'CIS_CPD', 'conditionData', rows._array[0].cis);
-              fetchData (db, 'CIS_InfoImportantes', 'infoData', rows._array[0].cis);
-              fetchData (db, 'CIS_HAS_SMR', 'smrData', rows._array[0].cis);
             }
           });
         },
@@ -150,7 +142,21 @@ export const searchByDeno = (db, name) => {
         }
       );
   }
-}
+};
+
+export const fillData = (CIS) => {
+  return (dispatch, getState) => {
+    //console.log(getState());
+    var appReducer = getState().app;
+    fetchData (appReducer.dbAsmr, 'CIS_HAS_ASMR', 'asmrData', cis, dispatch);
+    fetchData (appReducer.dbCIP, 'CIP_CIS', 'cipData', cis, dispatch);
+    fetchData (appReducer.dbCompo, 'CIS_COMPO', 'compoData', cis, dispatch);
+    fetchData (appReducer.dbCondition, 'CIS_CPD', 'conditionData', cis, dispatch);
+    fetchData (appReducer.dbGeneral, 'CIS_GENERAL', 'generalData', cis, dispatch);
+    fetchData (appReducer.dbInfo, 'CIS_InfoImportantes', 'infoData', cis, dispatch);
+    fetchData (appReducer.dbSmr, 'CIS_HAS_SMR', 'smrData', cis, dispatch);
+  }
+};
 
 export const searchByCip13 = (db, cip13) => {
   return (dispatch, getState) => {
@@ -163,12 +169,13 @@ export const searchByCip13 = (db, cip13) => {
               //console.log(rows);
               var deno = rows._array[0].denomination_medicament.substr(0, rows._array[0].denomination_medicament.indexOf(','));
               dispatch(done('SEARCH_BY_CIP13', {data: rows._array, scanError: false, isRunning: false}));
-              fetchData (db, 'CIS_HAS_ASMR', 'asmrData', rows._array[0].cis);
-              fetchData (db, 'CIS_COMPO', 'compoData', rows._array[0].cis);
-              fetchData (db, 'CIS_CPD', 'conditionData', rows._array[0].cis);
-              fetchData (db, 'CIS_GENERAL', 'generalData', rows._array[0].cis);
-              fetchData (db, 'CIS_InfoImportantes', 'infoData', rows._array[0].cis);
-              fetchData (db, 'CIS_HAS_SMR', 'smrData', rows._array[0].cis);
+              var appReducer = getState().app;
+              fetchData (appReducer.dbAsmr, 'CIS_HAS_ASMR', 'asmrData', rows._array[0].cis, dispatch);
+              fetchData (appReducer.dbCompo, 'CIS_COMPO', 'compoData', rows._array[0].cis, dispatch);
+              fetchData (appReducer.dbCondition, 'CIS_CPD', 'conditionData', rows._array[0].cis, dispatch);
+              fetchData (appReducer.dbGeneral, 'CIS_GENERAL', 'generalData', rows._array[0].cis, dispatch);
+              fetchData (appReducer.dbInfo, 'CIS_InfoImportantes', 'infoData', rows._array[0].cis, dispatch);
+              fetchData (appReducer.dbSmr, 'CIS_HAS_SMR', 'smrData', rows._array[0].cis, dispatch);
             }
           });
         },
@@ -178,7 +185,7 @@ export const searchByCip13 = (db, cip13) => {
         }
       );
   }
-}
+};
 
 export const getHistoric = () => {
   return async (dispatch, getState) => {
@@ -192,7 +199,7 @@ export const getHistoric = () => {
       console.log(error);
     }
   }
-}
+};
 
 export const setHistoric = (item, currentHistoric) => {
   return (dispatch, getState) => {
@@ -213,7 +220,7 @@ export const setHistoric = (item, currentHistoric) => {
       console.log(error);
     }
   }
-}
+};
 
 export const deleteHistoric = (currentHistoric) => {
   return async (dispatch, getState) => {
@@ -226,28 +233,9 @@ export const deleteHistoric = (currentHistoric) => {
       console.log(error);
     }
   }
-}
+};
 
-fetchData (db, dbName, storeName, cis) {
-  return (dispatch, getState) => {
-    db.transaction(
-        tx => {
-          tx.executeSql(`SELECT * FROM `+dbName+` WHERE cis = ?`, [cis], (_, { rows }) => {
-            //console.log(JSON.stringify(rows))
-            if(rows.length >= 1) {
-              //console.log(rows);
-              dispatch(done('FETCH_DATA',{storeName: storeName, data: rows._array}));
-            }
-          });
-        },
-        (err) => {
-          console.log("Failed Message", err);
-        }
-      );
-  }
-}
-
-ensureFolderExists() {
+var ensureFolderExists = () => {
   const path = `${FileSystem.documentDirectory}SQLite`
   return FileSystem.getInfoAsync(path).then(({exists}) => {
     if (!exists) {
@@ -256,4 +244,21 @@ ensureFolderExists() {
       return Promise.resolve(true)
     }
   })
-}
+};
+
+var fetchData = (db, dbName, storeName, cis, dispatch) => {
+  db.transaction(
+      tx => {
+        tx.executeSql(`SELECT * FROM `+dbName+` WHERE cis = ?`, [cis], (_, { rows }) => {
+          //console.log(JSON.stringify(rows))
+          if(rows.length >= 1) {
+            //console.log(rows);
+            dispatch(done('FETCH_DATA',{storeName: storeName, data: rows._array}));
+          }
+        });
+      },
+      (err) => {
+        console.log("Failed Message", err);
+      }
+    );
+};

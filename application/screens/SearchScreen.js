@@ -33,7 +33,8 @@ import {
   loadDbCondition,
   loadDbGeneral,
   loadDbInfo,
-  loadDbSmr
+  loadDbSmr,
+  fillData
 } from '../redux/action/AppActions';
 
 class SearchScreen extends React.Component {
@@ -77,9 +78,19 @@ class SearchScreen extends React.Component {
   }
 
   _onPress = (item) => {
-    this.props.setHistoric(item, this.props.app.historic);
-    var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
-    this.props.navigation.navigate('Medoc');
+    var loaded = this.props.app.dbAsmrLoaded
+                && this.props.app.dbCIPLoaded
+                && this.props.app.dbCompoLoaded
+                && this.props.app.dbConditionLoaded
+                && this.props.app.dbGeneralLoaded
+                && this.props.app.dbInfoLoaded
+                && this.props.app.dbSmrLoaded;
+    if(loaded) {
+      this.props.fillData(item.cis);
+      this.props.setHistoric(item, this.props.app.historic);
+      var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
+      this.props.navigation.navigate('Medoc');
+    }
   }
 
   _listHeaderComponent = () => (
@@ -199,7 +210,8 @@ const mapDispatchToProps = dispatch => (
     loadDbCondition,
     loadDbGeneral,
     loadDbInfo,
-    loadDbSmr
+    loadDbSmr,
+    fillData
   }, dispatch)
 );
 

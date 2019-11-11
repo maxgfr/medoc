@@ -75,14 +75,14 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case 'FETCH_DATA':
       return {
         ...state,
-        action.payload.storeName: action.payload.data,
+        [`${action.payload.storeName}`]: action.payload.data 
       };
     case 'SEARCH_BY_DENO':
       return {
         ...state,
         generalData: action.payload.data,
         isSearching: action.payload.isSearching,
-        denomination: action.payload.denomination,
+        denomination: action.payload.denomination
       };
     case 'SEARCH_BY_CIP13':
       return {
