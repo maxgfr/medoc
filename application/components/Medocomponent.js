@@ -129,7 +129,7 @@ export default class Medocomponent extends Component {
                 );
               })}
 
-            { this.props.smr.map((item, index) => {
+            { this.props.smrData.map((item, index) => {
                 return (
                   <View key={index} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
                     <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Avis SMR (Service médical rendu)</Text>
@@ -155,7 +155,7 @@ export default class Medocomponent extends Component {
                 );
               })}
 
-            { this.props.asmr.map((item, index) => {
+            { this.props.asmrData.map((item, index) => {
                   return (
                     <View key={index} style={{margin: 6, borderRadius: 10, backgroundColor: '#272830', justifyContent : 'center', padding: 20}}>
                       <Text style={{color: '#e3e4e8', fontSize: 18, fontWeight: 'bold', marginBottom: 7}}>Avis ASMR (Amélioration du service médical rendu)</Text>

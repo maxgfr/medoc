@@ -25,6 +25,7 @@ const INITIAL_STATE = {
   infoData: [],
   smrData: [],
   historic: [],
+  searchData: [],
   denomination: ''
 };
 
@@ -80,7 +81,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case 'SEARCH_BY_DENO':
       return {
         ...state,
-        generalData: action.payload.data,
+        searchData: action.payload.data,
         isSearching: action.payload.isSearching,
         denomination: action.payload.denomination
       };
@@ -99,7 +100,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case 'INIT_SEARCH':
       return {
         ...state,
-        generalData: []
+        searchData: []
       };
     default:
       return state;

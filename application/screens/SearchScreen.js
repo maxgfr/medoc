@@ -189,7 +189,7 @@ class SearchScreen extends React.Component {
       <Container style={{ flex: 1, backgroundColor: "#161a21"}}>
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={this.props.app.generalData}
+          data={this.props.app.searchData}
           ListHeaderComponent={this._listHeaderComponent}
           renderItem={this._renderItem}
           ListEmptyComponent={this._listEmptyComponent}
