@@ -34,7 +34,8 @@ import {
   loadDbGeneral,
   loadDbInfo,
   loadDbSmr,
-  fillData
+  fillData,
+  initSearch
 } from '../redux/action/AppActions';
 
 class SearchScreen extends React.Component {
@@ -58,18 +59,15 @@ class SearchScreen extends React.Component {
     this.props.loadDbSmr();
   }
 
-  updateSearch = async (search) => {
-    var loaded = this.props.app.dbAsmrLoaded
-                && this.props.app.dbCIPLoaded
-                && this.props.app.dbCompoLoaded
-                && this.props.app.dbConditionLoaded
-                && this.props.app.dbGeneralLoaded
-                && this.props.app.dbInfoLoaded
-                && this.props.app.dbSmrLoaded;
-    if(!this.props.app.isSearching && loaded) {
+  updateSearch = (search) => {
+    if(!this.props.app.isSearching) {
       this.setState({search: search});
-      var new_search = search+"%";
-      this.props.searchByDeno(this.props.app.dbGeneral, new_search);
+      if(search == "") {
+        this.props.initSearch();
+      } else {
+        var new_search = search+"%";
+        this.props.searchByDeno(this.props.app.dbGeneral, new_search);
+      }
     }
   };
 
@@ -78,19 +76,10 @@ class SearchScreen extends React.Component {
   }
 
   _onPress = (item) => {
-    var loaded = this.props.app.dbAsmrLoaded
-                && this.props.app.dbCIPLoaded
-                && this.props.app.dbCompoLoaded
-                && this.props.app.dbConditionLoaded
-                && this.props.app.dbGeneralLoaded
-                && this.props.app.dbInfoLoaded
-                && this.props.app.dbSmrLoaded;
-    if(loaded) {
-      this.props.fillData(item.cis);
-      this.props.setHistoric(item, this.props.app.historic);
-      var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
-      this.props.navigation.navigate('Medoc');
-    }
+    this.props.fillData(item.cis);
+    this.props.setHistoric(item, this.props.app.historic);
+    var deno = item.denomination_medicament.substr(0, item.denomination_medicament.indexOf(','));
+    this.props.navigation.navigate('Medoc');
   }
 
   _listHeaderComponent = () => (
@@ -101,6 +90,13 @@ class SearchScreen extends React.Component {
         placeholder="Recherchez votre médicament..."
         onChangeText={this.updateSearch}
         value={this.state.search}
+        disabled={!(this.props.app.dbAsmrLoaded
+                    && this.props.app.dbCIPLoaded
+                    && this.props.app.dbCompoLoaded
+                    && this.props.app.dbConditionLoaded
+                    && this.props.app.dbGeneralLoaded
+                    && this.props.app.dbInfoLoaded
+                    && this.props.app.dbSmrLoaded)}
       />
     </View>
 
@@ -132,47 +128,58 @@ class SearchScreen extends React.Component {
   _listEmptyComponent = ({item, index}) => (
     <View>
       {
-        this.state.search !== '' && !this.props.app.isSearching ?
+        !(this.props.app.dbAsmrLoaded && this.props.app.dbCIPLoaded && this.props.app.dbCompoLoaded && this.props.app.dbConditionLoaded && this.props.app.dbGeneralLoaded && this.props.app.dbInfoLoaded && this.props.app.dbSmrLoaded) ?
         <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
-            <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Médicament non trouvé</Text>
+            <Icon type='FontAwesome' name='warning' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15, marginBottom: 10 }} />
+            <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center', marginBottom: 10 }}>La base de donnée est en cours de chargement...</Text>
+            <ActivityIndicator style={{color: '#e3e4e8'}} />
         </View>
-        : null
-      }
-      {
-        this.state.search === '' && !this.props.app.isSearching ?
+        :
         <View>
-          <TouchableOpacity onPress={this._onCamera} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Icon type='MaterialCommunityIcons' name='barcode-scan' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15 }} />
-            <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Effectuez une recherche avec l'appareil photo de votre smartphone</Text>
-          </TouchableOpacity>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={[iOSUIKit.title3EmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Historique</Text>
-            <TouchableOpacity onPress={this._ondDeleteHistoric} >
-              <Text style={{color: '#e3e4e8', fontSize: 10, textAlign: 'center'}}>Supprimez l'historique</Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            data={this.props.app.historic}
-            renderItem={this._renderItem}
-            ListEmptyComponent={() => {
-              return(
-                <View onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
-                    <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Pas d'historique</Text>
-                </View>
-              )
-            }}
-            style={{backgroundColor: "#161a21"}}
-          />
+          {
+            this.state.search !== '' && !this.props.app.isSearching ?
+            <View style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+                <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Médicament non trouvé</Text>
+            </View>
+            : null
+          }
+          {
+            this.state.search === '' && !this.props.app.isSearching ?
+            <View>
+              <TouchableOpacity onPress={this._onCamera} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
+                <Icon type='MaterialCommunityIcons' name='barcode-scan' style={{ color: '#e3e4e8', fontSize:30, marginRight: 15, marginBottom: 10 }} />
+                <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Effectuez une recherche avec l'appareil photo de votre smartphone</Text>
+              </TouchableOpacity>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Text style={[iOSUIKit.title3EmphasizedWhite, {marginBottom: 10, marginLeft: 12}]}>Historique</Text>
+                <TouchableOpacity onPress={this._ondDeleteHistoric} >
+                  <Text style={{color: '#e3e4e8', fontSize: 10, textAlign: 'center'}}>Supprimez l'historique</Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                data={this.props.app.historic}
+                renderItem={this._renderItem}
+                ListEmptyComponent={() => {
+                  return(
+                    <View onPress={() => { this._onPress(item) }} style={{padding: 20, margin: 6, borderRadius: 10, backgroundColor: '#272830', alignItems: 'center', justifyContent : 'center'}}>
+                        <Text style={{color: '#e3e4e8', fontSize: 15, textAlign: 'center'}}>Pas d'historique</Text>
+                    </View>
+                  )
+                }}
+                style={{backgroundColor: "#161a21"}}
+              />
+            </View>
+            : null
+          }
+          {
+            this.props.app.isSearching ?
+            <View style={{marginTop: 20}}>
+              <ActivityIndicator size="large"/>
+            </View>
+            : null
+          }
         </View>
-        : null
-      }
-      {
-        this.props.app.isSearching ?
-        <View style={{marginTop: 20}}>
-          <ActivityIndicator size="large"/>
-        </View>
-        : null
       }
     </View>
   );
@@ -211,7 +218,8 @@ const mapDispatchToProps = dispatch => (
     loadDbGeneral,
     loadDbInfo,
     loadDbSmr,
-    fillData
+    fillData,
+    initSearch
   }, dispatch)
 );
 

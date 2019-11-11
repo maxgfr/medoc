@@ -10,6 +10,12 @@ const done = (type, payload) => (
   }
 );
 
+export const initSearch = () => {
+  return (dispatch, getState) => {
+    dispatch(done('INIT_SEARCH', {}));
+  }
+}
+
 export const loadDbAsmr = () => {
   return (dispatch, getState) => {
     var base_uri = Asset.fromModule(require('../../assets/database/dbAsmr.db')).uri;
@@ -133,6 +139,8 @@ export const searchByDeno = (db, name) => {
               //console.log(rows);
               var deno = rows._array[0].denomination_medicament.substr(0, rows._array[0].denomination_medicament.indexOf(','));
               dispatch(done('SEARCH_BY_DENO', {isSearching: false, data: rows._array, denomination: deno }));
+            } else {
+              dispatch(done('SEARCH_BY_DENO', {isSearching: false, data: getState().app.generalData, denomination: getState().app.denomination }));
             }
           });
         },
@@ -144,7 +152,7 @@ export const searchByDeno = (db, name) => {
   }
 };
 
-export const fillData = (CIS) => {
+export const fillData = (cis) => {
   return (dispatch, getState) => {
     //console.log(getState());
     var appReducer = getState().app;
@@ -176,6 +184,8 @@ export const searchByCip13 = (db, cip13) => {
               fetchData (appReducer.dbGeneral, 'CIS_GENERAL', 'generalData', rows._array[0].cis, dispatch);
               fetchData (appReducer.dbInfo, 'CIS_InfoImportantes', 'infoData', rows._array[0].cis, dispatch);
               fetchData (appReducer.dbSmr, 'CIS_HAS_SMR', 'smrData', rows._array[0].cis, dispatch);
+            } else {
+              dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: true, isRunning: false}));
             }
           });
         },

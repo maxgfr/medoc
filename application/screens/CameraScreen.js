@@ -36,18 +36,11 @@ class CameraScreen extends React.Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     //console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    var loaded = this.props.app.dbAsmrLoaded
-                && this.props.app.dbCIPLoaded
-                && this.props.app.dbCompoLoaded
-                && this.props.app.dbConditionLoaded
-                && this.props.app.dbGeneralLoaded
-                && this.props.app.dbInfoLoaded
-                && this.props.app.dbSmrLoaded;
     if(type == "org.iso.DataMatrix" || type == "16") {
       data = data.substring(4,17);
       //console.log(data);
     }
-    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.props.app.isRunning && this.props.app.scanError && !loaded && data.length != 13) {
+    if(type != "org.iso.Code128" && type != "org.iso.DataMatrix" && type != "16" && this.props.app.isRunning && this.props.app.scanError && data.length != 13) {
       this.setState({scanLocalError: true});
       return;
     }

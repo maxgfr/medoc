@@ -75,7 +75,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case 'FETCH_DATA':
       return {
         ...state,
-        [`${action.payload.storeName}`]: action.payload.data 
+        [`${action.payload.storeName}`]: action.payload.data
       };
     case 'SEARCH_BY_DENO':
       return {
@@ -95,6 +95,11 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         historic: action.payload.historic
+      };
+    case 'INIT_SEARCH':
+      return {
+        ...state,
+        generalData: []
       };
     default:
       return state;
