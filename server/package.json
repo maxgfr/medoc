@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
-    "iconv-lite": "^0.5.0",
     "sqlite3": "^4.0.9"
   }
 }
