@@ -1,9 +1,17 @@
 // MAJ 03/06
 var sqlite3 = require('sqlite3').verbose();
 var fs = require('fs');
+var iconv = require('iconv-lite');
 var inputCIP = fs.createReadStream('./data/CIS_CIP_bdpm.txt');
 var dbCIP = new sqlite3.Database('data/dbCIP.db');
 var all_medoc = [];
+
+function toUTF8(body) {
+  var buff = new Buffer(body);
+  var str = iconv.decode(buff, 'win1252');
+  var utf8 = new Buffer(str, 'utf8').toString();
+  return utf8;
+}
 
 function readLines(input, func, callback) {
   var remaining = '';
@@ -14,20 +22,17 @@ function readLines(input, func, callback) {
     while (index > -1) {
       var line = remaining.substring(0, index);
       remaining = remaining.substring(index + 1);
-      line = removeAccents(line);
-      console.log(line);
-      //
-      //func(line);
-      return;
+      line = toUTF8(line);
+      func(line);
       index = remaining.indexOf('\n');
     }
   });
 
   input.on('end', function() {
     if (remaining.length > 0) {
-      //func(remaining);
+      func(remaining);
     }
-    //callback();
+    callback();
   });
 }
 
@@ -101,7 +106,7 @@ function saveDataCIP(arr) {
   dbCIP.close();
 }
 
-//readLines(inputCIP, processCIP, () => { saveDataCIP(all_medoc); });
+readLines(inputCIP, processCIP, () => { saveDataCIP(all_medoc); });
 
 //readByCip13("3400933254063", dbCIP);
 
@@ -159,7 +164,7 @@ function saveDataGeneral(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputGeneral, processGeneral, () => { saveDataGeneral(general_medoc, dbGeneral, "CIS_GENERAL"); });
+readLines(inputGeneral, processGeneral, () => { saveDataGeneral(general_medoc, dbGeneral, "CIS_GENERAL"); });
 
 //readByCis("66057393", dbGeneral, "CIS_GENERAL");
 
@@ -210,7 +215,7 @@ function saveDataCompo(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputCompo, processCompo, () => { saveDataCompo(compo_medoc, dbCompo, "CIS_COMPO"); });
+readLines(inputCompo, processCompo, () => { saveDataCompo(compo_medoc, dbCompo, "CIS_COMPO"); });
 
 //readByCis("66057393", dbCompo, "CIS_COMPO");
 
@@ -249,7 +254,7 @@ function saveDataCondition(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputCondition, processCondition, () => { saveDataCondition(condition, dbCondition, "CIS_CPD"); });
+readLines(inputCondition, processCondition, () => { saveDataCondition(condition, dbCondition, "CIS_CPD"); });
 
 //readByCis("65982247", dbCondition, "CIS_CPD");
 
@@ -295,7 +300,7 @@ function saveDataAsmr(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputAsmr, processAsmr, () => { saveDataAsmr(asmr, dbAsmr, "CIS_HAS_ASMR"); });
+readLines(inputAsmr, processAsmr, () => { saveDataAsmr(asmr, dbAsmr, "CIS_HAS_ASMR"); });
 
 //readByCis("65071397", dbAsmr, "CIS_HAS_ASMR");
 
@@ -341,7 +346,7 @@ function saveDataSmr(arr, db, name_db) {
   db.close();
 }
 
-//readLines(inputSmr, processSmr, () => { saveDataSmr(smr, dbSmr, "CIS_HAS_SMR"); });
+readLines(inputSmr, processSmr, () => { saveDataSmr(smr, dbSmr, "CIS_HAS_SMR"); });
 
 //readByCis("66393935", dbSmr, "CIS_HAS_SMR");
 
