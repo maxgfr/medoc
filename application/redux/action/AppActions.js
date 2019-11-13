@@ -257,6 +257,17 @@ var ensureFolderExists = () => {
   })
 };
 
+var ensureFileExists = (file) => {
+  const path = `${FileSystem.cacheDirectory}SQLite/${file}`
+  return FileSystem.getInfoAsync(path).then(({exists}) => {
+    if (!exists) {
+      return Promise.resolve(true)
+    } else {
+      return Promise.resolve(false)
+    }
+  })
+};
+
 var fetchData = (db, dbName, storeName, cis, dispatch) => {
   db.transaction(
       tx => {
