@@ -22,6 +22,7 @@ const Stack = createStackNavigator(
       ...TransitionPresets.ModalPresentationIOS,
       gestureEnabled: true,
       cardOverlayEnabled: true,
+      cardStyle: {backgroundColor: "#161a21"}
     },
   }
 );
