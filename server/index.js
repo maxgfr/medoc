@@ -1,4 +1,4 @@
-// MAJ 03/06
+// MAJ 24/10
 var sqlite3 = require('sqlite3').verbose();
 var fs = require('fs');
 var inputCIP = fs.createReadStream('./data/CIS_CIP_bdpm.txt', { encoding : 'latin1' });
@@ -341,7 +341,7 @@ function saveDataSmr(arr, db, name_db) {
 
 //readByCis("66393935", dbSmr, "CIS_HAS_SMR");
 
-var inputInfo = fs.createReadStream('./data/CIS_InfoImportantes_20191002092032_bdpm.txt', { encoding : 'latin1' });
+var inputInfo = fs.createReadStream('./data/CIS_InfoImportantes_bdpm.txt', { encoding : 'latin1' });
 var dbInfo = new sqlite3.Database('data/dbInfo.db');
 var infos = [];
 
