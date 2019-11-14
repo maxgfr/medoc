@@ -19,7 +19,7 @@ export const initSearch = () => {
 export const loadDbAsmr = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbAsmr');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbAsmr.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
       ensureFolderExists().then(() => {
@@ -43,7 +43,7 @@ export const loadDbAsmr = () => {
 export const loadDbCIP = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbCIP');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbCIP.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
       ensureFolderExists().then(() => {
@@ -67,7 +67,7 @@ export const loadDbCIP = () => {
 export const loadDbCompo = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbCompo');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbCompo.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
       ensureFolderExists().then(() => {
@@ -91,7 +91,7 @@ export const loadDbCompo = () => {
 export const loadDbCondition = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbCondition');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbCondition.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbCondition.db`;
       ensureFolderExists().then(() => {
@@ -115,7 +115,7 @@ export const loadDbCondition = () => {
 export const loadDbGeneral = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbGeneral');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbGeneral.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
       ensureFolderExists().then(() => {
@@ -139,7 +139,7 @@ export const loadDbGeneral = () => {
 export const loadDbInfo = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbInfo');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbInfo.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbInfo.db`;
       ensureFolderExists().then(() => {
@@ -163,7 +163,7 @@ export const loadDbInfo = () => {
 export const loadDbSmr = () => {
   return async (dispatch, getState) => {
     const needDownload = await AsyncStorage.getItem('@dbSmr');
-    if(needDownload === null) {
+    if(needDownload != 'done') {
       var base_uri = Asset.fromModule(require('../../assets/database/dbSmr.db')).uri;
       var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
       ensureFolderExists().then(() => {
