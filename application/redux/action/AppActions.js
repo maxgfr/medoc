@@ -17,114 +17,170 @@ export const initSearch = () => {
 }
 
 export const loadDbAsmr = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbAsmr.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbAsmr.db');
-        //console.log('dbAsmr loaded');
-        dispatch(done('LOAD_DB_ASMR', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbAsmr');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbAsmr.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbAsmr.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbAsmr.db');
+          //console.log('dbAsmr loaded');
+          dispatch(done('LOAD_DB_ASMR', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbAsmr', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbAsmr.db');
+      dispatch(done('LOAD_DB_ASMR', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbCIP = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbCIP.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbCIP.db');
-        //console.log('dbCIP loaded');
-        dispatch(done('LOAD_DB_CIP', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbCIP');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbCIP.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbCIP.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbCIP.db');
+          //console.log('dbCIP loaded');
+          dispatch(done('LOAD_DB_CIP', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbCIP', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbCIP.db');
+      dispatch(done('LOAD_DB_CIP', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbCompo = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbCompo.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbCompo.db');
-        //console.log('dbCompo loaded');
-        dispatch(done('LOAD_DB_COMPO', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbCompo');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbCompo.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbCompo.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbCompo.db');
+          //console.log('dbCompo loaded');
+          dispatch(done('LOAD_DB_COMPO', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbCompo', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbCompo.db');
+      dispatch(done('LOAD_DB_COMPO', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbCondition = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbCondition.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbCondition.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbCondition.db')
-        //console.log('dbCondition loaded');
-        dispatch(done('LOAD_DB_CONDITION', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbCondition');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbCondition.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbCondition.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbCondition.db')
+          //console.log('dbCondition loaded');
+          dispatch(done('LOAD_DB_CONDITION', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbCondition', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbCondition.db');
+      dispatch(done('LOAD_DB_CONDITION', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbGeneral = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbGeneral.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbGeneral.db')
-        //console.log('dbGeneral loaded');
-        dispatch(done('LOAD_DB_GENERAL', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbGeneral');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbGeneral.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbGeneral.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbGeneral.db')
+          //console.log('dbGeneral loaded');
+          dispatch(done('LOAD_DB_GENERAL', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbGeneral', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbGeneral.db');
+      dispatch(done('LOAD_DB_GENERAL', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbInfo = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbInfo.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbInfo.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbInfo.db')
-        //console.log('dbGeneral loaded');
-        dispatch(done('LOAD_DB_INFO', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbInfo');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbInfo.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbInfo.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbInfo.db')
+          //console.log('dbGeneral loaded');
+          dispatch(done('LOAD_DB_INFO', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbInfo', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbInfo.db');
+      dispatch(done('LOAD_DB_INFO', {db: db, dbLoaded: true}));
+    }
   }
 };
 
 export const loadDbSmr = () => {
-  return (dispatch, getState) => {
-    var base_uri = Asset.fromModule(require('../../assets/database/dbSmr.db')).uri;
-    var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
-    ensureFolderExists().then(() => {
-      FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
-        var db = SQLite.openDatabase('dbSmr.db');
-        //console.log('dbSmr loaded');
-        dispatch(done('LOAD_DB_SMR', {db: db, dbLoaded: true}));
-      }).catch((err) => {
-        console.log(err);
+  return async (dispatch, getState) => {
+    const needDownload = await AsyncStorage.getItem('@dbSmr');
+    if(needDownload === null) {
+      var base_uri = Asset.fromModule(require('../../assets/database/dbSmr.db')).uri;
+      var new_uri = `${FileSystem.documentDirectory}SQLite/dbSmr.db`;
+      ensureFolderExists().then(() => {
+        FileSystem.createDownloadResumable(base_uri, new_uri).downloadAsync().then(() => {
+          var db = SQLite.openDatabase('dbSmr.db');
+          //console.log('dbSmr loaded');
+          dispatch(done('LOAD_DB_SMR', {db: db, dbLoaded: true}));
+        })
+        .then(AsyncStorage.setItem('@dbSmr', 'done'))
+        .catch((err) => {
+          console.log(err);
+        });
       });
-    });
+    } else {
+      var db = SQLite.openDatabase('dbSmr.db');
+      dispatch(done('LOAD_DB_SMR', {db: db, dbLoaded: true}));
+    }
   }
 };
 
@@ -146,6 +202,7 @@ export const searchByDeno = (db, name) => {
         },
         (err) => {
           console.log("Failed Message", err);
+          reinitStorage();
           dispatch(done('SEARCH_BY_DENO', {isSearching: false, data: [], denomination: '' }));
         }
       );
@@ -192,6 +249,7 @@ export const searchByCip13 = (db, cip13) => {
         },
         (err) => {
           console.log("Failed Message", err);
+          reinitStorage();
           dispatch(done('SEARCH_BY_CIP13', {data: [], scanError: true, isRunning: false}));
         }
       );
@@ -237,7 +295,12 @@ export const deleteHistoric = (currentHistoric) => {
   return async (dispatch, getState) => {
     try {
       if(currentHistoric.length > 0) {
-        await AsyncStorage.clear();
+        //await AsyncStorage.clear();
+        try {
+          AsyncStorage.setItem('@historique', JSON.stringify([]));
+        } catch (error) {
+          console.log(error);
+        }
         dispatch(done('UPDATE_HISTORIC', {historic: []}));
       }
     } catch (error) {
@@ -266,6 +329,14 @@ var ensureFileExists = (file) => {
       return Promise.resolve(false)
     }
   })
+};
+
+var reinitStorage = () => {
+  try {
+    AsyncStorage.clear();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 var fetchData = (db, dbName, storeName, cis, dispatch) => {
