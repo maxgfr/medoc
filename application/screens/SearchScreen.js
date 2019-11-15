@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import * as Permissions from 'expo-permissions';
+import * as FileSystem from 'expo-file-system';
 import {
   Container,
   Left,
@@ -48,16 +49,29 @@ class SearchScreen extends React.Component {
     search: ''
   };
 
-  componentDidMount() {
-    this.props.getHistoric();
-    this.props.loadDbAsmr();
-    this.props.loadDbCIP();
-    this.props.loadDbCompo();
-    this.props.loadDbCondition();
-    this.props.loadDbGeneral();
-    this.props.loadDbInfo();
-    this.props.loadDbSmr();
+  async componentDidMount() {
+    this.ensureFolderExists().then(() => {
+      this.props.getHistoric();
+      this.props.loadDbAsmr();
+      this.props.loadDbCIP();
+      this.props.loadDbCompo();
+      this.props.loadDbCondition();
+      this.props.loadDbGeneral();
+      this.props.loadDbInfo();
+      this.props.loadDbSmr();
+    });
   }
+
+  ensureFolderExists = () => {
+    const path = `${FileSystem.documentDirectory}SQLite`
+    return FileSystem.getInfoAsync(path).then(({exists}) => {
+      if (!exists) {
+        return FileSystem.makeDirectoryAsync(path)
+      } else {
+        return Promise.resolve(true)
+      }
+    })
+  };
 
   updateSearch = (search) => {
     if(!this.props.app.isSearching) {
