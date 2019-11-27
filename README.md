@@ -21,7 +21,7 @@ Médoc aims to help you to find a drug via its name or barcode. You will be able
   <img src="https://github.com/maxgfr/medoc/blob/master/assets/ios/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20Max%20-%202019-07-09%20at%2014.49.22.png" height="540" width="280"/>
 </div>
 
-<h2 align="center"> Getting started with mobile application </h2>
+<h2 align="center">Getting started</h2>
 
 ```
 npm install -g expo-cli
