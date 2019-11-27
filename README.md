@@ -13,7 +13,7 @@
 </a>
 </h3>
 
-<h2 align="center"> Screenshot </23>
+<h2 align="center"> Screenshot </h3>
 
 <div align="center">
   <img src="https://github.com/maxgfr/medoc/blob/master/assets/ios/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20Max%20-%202019-07-09%20at%2014.48.57.png" height="540" width="280"/>
