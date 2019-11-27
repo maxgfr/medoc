@@ -5,11 +5,11 @@
 </h3>
 
 <h3 align="center">
-<a href="https://play.google.com/store/apps/details?id=com.maxgfr.mehdicament">
-   <img src="https://lh3.googleusercontent.com/1hJj6Aw2k6cEyFu10xdj5riLo0wBGFKE5XnbGaymhgo1z8Tsr8EpfJr2jbQFRxDONvwk6lak-62F2Fx7-_jp-ykJKA=w1000" alt="Google Play" height="40" width="160"/>
+<a href="https://play.google.com/store/apps/details?id=com.maxgfr.mehdicament" target="_blank">
+   <img src="https://lh3.googleusercontent.com/1hJj6Aw2k6cEyFu10xdj5riLo0wBGFKE5XnbGaymhgo1z8Tsr8EpfJr2jbQFRxDONvwk6lak-62F2Fx7-_jp-ykJKA=w1000" alt="Google Play" height="70" width="200"/>
 </a>
-<a href="https://apps.apple.com/fr/app/m%C3%A9doc/id1472176512">
-   <img src="https://protonmail.com/support/wp-content/uploads/2016/03/available-on-the-app-store-1345130940-600x208.jpg" alt="App Store" height="40" width="160"/>
+<a href="https://apps.apple.com/fr/app/m%C3%A9doc/id1472176512" target="_blank">
+   <img src="https://protonmail.com/support/wp-content/uploads/2016/03/available-on-the-app-store-1345130940-600x208.jpg" alt="App Store" height="70" width="200"/>
 </a>
 </h3>
 
