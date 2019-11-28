@@ -3,8 +3,8 @@
     "name": "Médoc",
     "slug": "mehdicament",
     "githubUrl": "https://github.com/maxgfr/mehdicament",
-    "description": "Scan et recherche de médicaments",
-    "privacy": "unlisted",
+    "description": "Médoc - find any drugs thanks to its name or barcode",
+    "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
