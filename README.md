@@ -8,9 +8,6 @@ Médoc aims to help you to find a drug via its name or barcode. You will be able
 <a href="https://play.google.com/store/apps/details?id=com.maxgfr.mehdicament">
    <img src="https://lh3.googleusercontent.com/1hJj6Aw2k6cEyFu10xdj5riLo0wBGFKE5XnbGaymhgo1z8Tsr8EpfJr2jbQFRxDONvwk6lak-62F2Fx7-_jp-ykJKA=w1000" alt="Google Play" height="70" width="200"/>
 </a>
-<a href="https://apps.apple.com/fr/app/m%C3%A9doc/id1472176512">
-   <img src="https://protonmail.com/support/wp-content/uploads/2016/03/available-on-the-app-store-1345130940-600x208.jpg" alt="App Store" height="70" width="200"/>
-</a>
 </div>
 
 <h2 align="center"> Screenshot </h2>
