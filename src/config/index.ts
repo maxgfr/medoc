@@ -19,6 +19,9 @@ export const Config = {
       ],
       estimatedOctet: 2992 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['denomination_medicament', 'cis'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt',
@@ -38,6 +41,9 @@ export const Config = {
       ],
       estimatedOctet: 3978 * 1024,
       isForDownload: true,
+      options: {
+        keys: ['cip7', 'cip13'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt',
@@ -54,6 +60,9 @@ export const Config = {
       ],
       estimatedOctet: 2661 * 1024,
       isForDownload: true,
+      options: {
+        keys: ['denomination_substance'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt',

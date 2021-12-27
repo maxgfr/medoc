@@ -2,14 +2,14 @@ import csv from 'csvtojson';
 import iconv from 'iconv-lite';
 import jschardet from 'jschardet';
 
-export const txtToJson = (
+export const txtToArrJson = (
   headers: Array<string>,
   txt: string,
-): Promise<Record<string, any>> => {
+): Promise<Array<Record<string, any>>> => {
   return new Promise(resolve => {
     csv({noheader: true, headers})
       .fromString(txt)
-      .then((json: Record<string, any>) => {
+      .then((json: Array<Record<string, any>>) => {
         resolve(json);
       });
   });
