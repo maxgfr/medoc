@@ -28,7 +28,6 @@ const useStore = create((set: SetState<AppStore>) => ({
               await storeAsync(`${name}_INDEX`, fuseIndex);
             }
             await storeAsync(name, json);
-            console.log(json);
             set(state => ({
               ...state,
               numDownloaded: state.numDownloaded + 1,
