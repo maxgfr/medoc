@@ -1,21 +1,13 @@
 import {Box, Button} from 'native-base';
 import * as React from 'react';
 import {View} from 'react-native';
-import {downloadUrl, txtToJson} from '../src/helpers';
+
+import useStore from '../src/store';
 
 function HomeScreen() {
-  const onPress = async () => {
-    const res = await downloadUrl(
-      'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt',
-      (receiver, total) => {
-        console.log(receiver, total);
-      },
-    );
-    const finalres = await txtToJson(
-      ['id_generique', 'libelle_generique', 'cis', 'type_generique', 'num_tri'],
-      res,
-    );
-    console.log(finalres);
+  const downloadAll = useStore(state => state.downloadAll);
+  const onPress = () => {
+    downloadAll();
   };
 
   return (

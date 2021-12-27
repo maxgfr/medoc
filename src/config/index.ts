@@ -37,7 +37,7 @@ export const Config = {
         'indication_droit_remboursement',
       ],
       estimatedOctet: 3978 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt',
@@ -53,7 +53,7 @@ export const Config = {
         'num_liaison',
       ],
       estimatedOctet: 2661 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt',
@@ -67,7 +67,7 @@ export const Config = {
         'libelle_smr',
       ],
       estimatedOctet: 3486 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt',
@@ -81,14 +81,14 @@ export const Config = {
         'libelle_asmr',
       ],
       estimatedOctet: 3015 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt',
       name: 'HAS_LiensPageCT_bdpm',
       header: ['has', 'lien_page_ct'],
       estimatedOctet: 431 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt',
@@ -101,14 +101,14 @@ export const Config = {
         'num_tri',
       ],
       estimatedOctet: 1118 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt',
       name: 'CIS_CPD_bdpm',
       header: ['cis', 'condition'],
       estimatedOctet: 1015 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
 
     {
@@ -116,7 +116,7 @@ export const Config = {
       name: 'CIS_InfoImportantes',
       header: ['cis', 'date_debut', 'date_fin', 'avis'],
       estimatedOctet: 7100 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
   ],
 };
