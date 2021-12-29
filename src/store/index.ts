@@ -101,10 +101,23 @@ const useStore = create<AppStore>(
       }));
       const queue = new PQueue({concurrency: 1});
       Config.downloadUrl.forEach(async ({name, searchIndexes}) => {
-        if (searchIndexes) {
-          await queue.add(async () => {
+        await queue.add(async () => {
+          const saveData = await getAsync(name);
+          set(state => ({
+            ...state,
+            objects: removeDuplicateObject(
+              [
+                ...state.objects,
+                {
+                  index: name,
+                  values: saveData,
+                },
+              ],
+              'index',
+            ),
+          }));
+          if (searchIndexes) {
             const saveIndex = await getAsync(`${name}_INDEX`);
-            const saveData = await getAsync(name);
             const fuseIndex = Fuse.parseIndex(saveIndex);
             const fuse = new Fuse(
               saveData as Array<Record<string, any>>,
@@ -124,8 +137,8 @@ const useStore = create<AppStore>(
                 'index',
               ),
             }));
-          });
-        }
+          }
+        });
       });
       set(state => ({
         ...state,
