@@ -42,7 +42,6 @@ function HomeScreen() {
         }}>
         Search collection by cip
       </Button>
-      <Button onPress={clear}>Clear all</Button>
     </ScrollView>
   );
 }

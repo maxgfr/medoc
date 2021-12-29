@@ -32,7 +32,9 @@ export const Config = {
       estimatedOctet: 2992 * 1024,
       isForDownload: true,
       searchIndexes: {
-        keys: ['denomination_medicament', 'cis'],
+        includeScore: true,
+        keys: ['denomination_medicament'],
+        threshold: 0.1,
       },
     },
     {
@@ -53,9 +55,6 @@ export const Config = {
       ],
       estimatedOctet: 3978 * 1024,
       isForDownload: true,
-      options: {
-        keys: ['cis', 'cip7', 'cip13'],
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt',
@@ -73,7 +72,9 @@ export const Config = {
       estimatedOctet: 2661 * 1024,
       isForDownload: true,
       options: {
-        keys: ['cis', 'denomination_substance'],
+        includeScore: true,
+        keys: ['denomination_substance'],
+        threshold: 0.1,
       },
     },
     {
@@ -89,9 +90,6 @@ export const Config = {
       ],
       estimatedOctet: 3486 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt',
@@ -106,9 +104,6 @@ export const Config = {
       ],
       estimatedOctet: 3015 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt',
@@ -116,9 +111,6 @@ export const Config = {
       header: ['has', 'lien_page_ct'],
       estimatedOctet: 431 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt',
@@ -132,9 +124,6 @@ export const Config = {
       ],
       estimatedOctet: 1118 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt',
@@ -142,9 +131,6 @@ export const Config = {
       header: ['cis', 'condition'],
       estimatedOctet: 1015 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
 
     {
@@ -153,9 +139,6 @@ export const Config = {
       header: ['cis', 'date_debut', 'date_fin', 'avis'],
       estimatedOctet: 7100 * 1024,
       isForDownload: true,
-      searchIndexes: {
-        keys: ['cis'],
-      },
     },
   ],
 };

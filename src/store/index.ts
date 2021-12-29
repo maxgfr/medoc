@@ -2,7 +2,7 @@ import create, {GetState, SetState} from 'zustand';
 import {Config, FileName} from '../config';
 import {
   clearAllAsync,
-  downloadUrl,
+  downloadFile,
   getAsync,
   removeDuplicateObject,
   storeAsync,
@@ -38,11 +38,8 @@ const useStore = create<AppStore>(
         async ({url, header, isForDownload, name, searchIndexes}) => {
           if (isForDownload) {
             await queue.add(async () => {
-              const downloadedText = await downloadUrl(url);
-              const json = await txtToArrJson(
-                header,
-                txtConverter(downloadedText),
-              );
+              const file = await downloadFile(url);
+              const json = await txtToArrJson(header, txtConverter(file));
               if (searchIndexes) {
                 const fuseIndex = Fuse.createIndex(searchIndexes.keys, json);
                 await storeAsync(`${name}_INDEX`, fuseIndex);

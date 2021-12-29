@@ -1,6 +1,6 @@
 import RNFetchBlob from 'rn-fetch-blob';
 
-export const downloadUrl = (
+export const downloadFile = (
   url: string,
   notifier?: (received: number, total: number) => void,
 ): Promise<string> => {
