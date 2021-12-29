@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ClearCache from 'react-native-clear-cache';
 
 export async function storeAsync(
   key: string,
@@ -63,6 +64,7 @@ export async function removeAsync(key: string): Promise<void> {
 export async function clearAllAsync(): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
+      ClearCache.clearAppCache(() => {});
       await AsyncStorage.clear();
       resolve();
     } catch (e) {

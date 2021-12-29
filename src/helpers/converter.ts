@@ -18,7 +18,7 @@ export const txtToArrJson = (
 export const txtConverter = (
   data: string,
   inputFormat = ' ISO-8859-1',
-  outputFormat = 'ISO-8859-1',
+  outputFormat = 'win1252',
 ): string => {
   const input = iconv.encode(data, inputFormat);
   const str = iconv.decode(input, outputFormat);

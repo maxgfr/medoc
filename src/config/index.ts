@@ -33,8 +33,8 @@ export const Config = {
       isForDownload: true,
       searchIndexes: {
         includeScore: true,
-        keys: ['denomination_medicament'],
-        threshold: 0.1,
+        keys: ['cis', 'denomination_medicament'],
+        threshold: 0.08,
       },
     },
     {
@@ -71,11 +71,6 @@ export const Config = {
       ],
       estimatedOctet: 2661 * 1024,
       isForDownload: true,
-      options: {
-        includeScore: true,
-        keys: ['denomination_substance'],
-        threshold: 0.1,
-      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt',

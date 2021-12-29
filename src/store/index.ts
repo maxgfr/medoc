@@ -12,27 +12,40 @@ import {
 import PQueue from 'p-queue/dist';
 import Fuse from 'fuse.js';
 
+type AppInitialState = {
+  numDownloaded: number;
+  allResult: Array<Record<string, any>>;
+  fuse: Array<{index: string; fuse: any}>;
+  objects: Array<{index: FileName; values: Array<Record<string, any>>}>;
+  searchIsReady: boolean;
+  cip13Result: Record<string, any>;
+  cisResult: Array<{index: FileName; result: Record<string, any>}>;
+};
+
 type AppStore = {
   downloadAll: () => void;
-  numDownloaded: number;
-  searchAll: (cis: string) => void;
-  allResult: Array<Record<string, any>>;
-  searchByCollection: (string: string, value: FileName) => void;
-  resultByCollection: Array<Record<string, any>>;
-  fuse: Array<{index: string; fuse: any}>;
+  searchAll: (search: string) => void;
+  searchByCis: (search: string) => void;
+  searchByCip13: (search: string) => void;
   restoreSearch: () => void;
-  searchIsReady: boolean;
   clear: () => void;
+} & AppInitialState;
+
+const initialState: AppInitialState = {
+  numDownloaded: 0,
+  allResult: [],
+  fuse: [],
+  objects: [],
+  searchIsReady: false,
+  cip13Result: {},
+  cisResult: [],
 };
 
 const useStore = create<AppStore>(
   (set: SetState<AppStore>, get: GetState<AppStore>) => ({
-    numDownloaded: 0,
-    allResult: [],
-    resultByCollection: [],
-    fuse: [],
-    searchIsReady: false,
-    downloadAll: () => {
+    ...initialState,
+    downloadAll: async () => {
+      await clearAllAsync();
       const queue = new PQueue({concurrency: 1});
       Config.downloadUrl.forEach(
         async ({url, header, isForDownload, name, searchIndexes}) => {
@@ -59,6 +72,19 @@ const useStore = create<AppStore>(
                 }));
               }
               await storeAsync(name, json);
+              set(state => ({
+                ...state,
+                objects: removeDuplicateObject(
+                  [
+                    ...state.objects,
+                    {
+                      index: name,
+                      values: json,
+                    },
+                  ],
+                  'index',
+                ),
+              }));
               set(state => ({
                 ...state,
                 numDownloaded: state.numDownloaded + 1,
@@ -107,37 +133,46 @@ const useStore = create<AppStore>(
       }));
     },
     searchAll: (search: string) => {
-      const result: Array<Record<string, any>> = [];
-      get().fuse.forEach(({fuse, index}) => {
-        result.push({index, result: fuse.search(search)});
+      let result: Array<Record<string, any>> = [];
+      get().fuse.forEach(({fuse}) => {
+        result = [...result, ...fuse.search(search)];
       });
+      result = result.sort((a, b) =>
+        a.score < b.score ? -1 : a.score > b.score ? 1 : 0,
+      );
       set(state => ({
         ...state,
         allResult: result,
       }));
     },
-    searchByCollection: (search: string, name: FileName) => {
-      let result: Array<Record<string, any>> = [];
-      get().fuse.forEach(({fuse, index}) => {
-        if (index === name) {
-          result = fuse.search(search);
+    searchByCis: (search: string) => {
+      let res: Array<{index: FileName; result: Record<string, any>}> = [];
+      get().objects.forEach(({index, values}) => {
+        res = [
+          ...res,
+          {index, result: values.find(item => item.cis === search) ?? {}},
+        ];
+      });
+      set(state => ({
+        ...state,
+        cisResult: res,
+      }));
+    },
+    searchByCip13: (search: string) => {
+      let result: Record<string, any> | undefined = {};
+      get().objects.forEach(({index, values}) => {
+        if (index === FileName.CIS_CIP_bdpm) {
+          result = values.find(item => item.cip13 === search);
         }
       });
       set(state => ({
         ...state,
-        resultByCollection: result,
+        cip13Result: result ?? {},
       }));
     },
     clear: async () => {
       await clearAllAsync();
-      set(state => ({
-        ...state,
-        numDownloaded: 0,
-        allResult: [],
-        resultByCollection: [],
-        fuse: [],
-        searchIsReady: false,
-      }));
+      set(initialState);
     },
   }),
 );
