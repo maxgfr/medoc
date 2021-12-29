@@ -20,3 +20,8 @@ export const txtConverter = (input: string, outputFormat = 'utf8'): string => {
     .decode(iconv.encode(input, jschardet.detect(input).encoding), outputFormat)
     .toString();
 };
+
+export const urlify = (text: string): string => {
+  var urlRegex = /<\/?[^>]+(>|$)/g;
+  return text.replace(urlRegex, '');
+};

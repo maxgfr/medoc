@@ -1,8 +1,20 @@
+export enum FileName {
+  CIS_bdpm = 'CIS_bdpm',
+  CIS_CIP_bdpm = 'CIS_CIP_bdpm',
+  CIS_COMPO_bdpm = 'CIS_COMPO_bdpm',
+  CIS_HAS_SMR_bdpm = 'CIS_HAS_SMR_bdpm',
+  CIS_HAS_ASMR_bdpm = 'CIS_HAS_ASMR_bdpm',
+  HAS_LiensPageCT_bdpm = 'HAS_LiensPageCT_bdpm',
+  CIS_GENER_bdpm = 'CIS_GENER_bdpm',
+  CIS_CPD_bdpm = 'CIS_CPD_bdpm',
+  CIS_InfoImportantes = 'CIS_InfoImportantes',
+}
+
 export const Config = {
   downloadUrl: [
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt',
-      name: 'CIS_bdpm',
+      name: FileName.CIS_bdpm,
       header: [
         'cis',
         'denomination_medicament',
@@ -25,7 +37,7 @@ export const Config = {
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt',
-      name: 'CIS_CIP_bdpm',
+      name: FileName.CIS_CIP_bdpm,
       header: [
         'cis',
         'cip7',
@@ -42,12 +54,12 @@ export const Config = {
       estimatedOctet: 3978 * 1024,
       isForDownload: true,
       options: {
-        keys: ['cip7', 'cip13'],
+        keys: ['cis', 'cip7', 'cip13'],
       },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt',
-      name: 'CIS_COMPO_bdpm',
+      name: FileName.CIS_COMPO_bdpm,
       header: [
         'cis',
         'designation',
@@ -61,12 +73,12 @@ export const Config = {
       estimatedOctet: 2661 * 1024,
       isForDownload: true,
       options: {
-        keys: ['denomination_substance'],
+        keys: ['cis', 'denomination_substance'],
       },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt',
-      name: 'CIS_HAS_SMR_bdpm',
+      name: FileName.CIS_HAS_SMR_bdpm,
       header: [
         'cis',
         'has',
@@ -77,10 +89,13 @@ export const Config = {
       ],
       estimatedOctet: 3486 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt',
-      name: 'CIS_HAS_ASMR_bdpm',
+      name: FileName.CIS_HAS_ASMR_bdpm,
       header: [
         'cis',
         'has',
@@ -91,17 +106,23 @@ export const Config = {
       ],
       estimatedOctet: 3015 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt',
-      name: 'HAS_LiensPageCT_bdpm',
+      name: FileName.HAS_LiensPageCT_bdpm,
       header: ['has', 'lien_page_ct'],
       estimatedOctet: 431 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt',
-      name: 'CIS_GENER_bdpm',
+      name: FileName.CIS_GENER_bdpm,
       header: [
         'id_generique',
         'libelle_generique',
@@ -111,21 +132,30 @@ export const Config = {
       ],
       estimatedOctet: 1118 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt',
-      name: 'CIS_CPD_bdpm',
+      name: FileName.CIS_CPD_bdpm,
       header: ['cis', 'condition'],
       estimatedOctet: 1015 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
 
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt',
-      name: 'CIS_InfoImportantes',
+      name: FileName.CIS_InfoImportantes,
       header: ['cis', 'date_debut', 'date_fin', 'avis'],
       estimatedOctet: 7100 * 1024,
       isForDownload: true,
+      searchIndexes: {
+        keys: ['cis'],
+      },
     },
   ],
 };
