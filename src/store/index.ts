@@ -6,20 +6,21 @@ import {
   getAsync,
   removeDuplicateObject,
   storeAsync,
-  txtConverter,
+  bufferToText,
   txtToArrJson,
 } from '../helpers';
 import PQueue from 'p-queue/dist';
 import Fuse from 'fuse.js';
 
 type AppInitialState = {
-  numDownloaded: number;
   allResult: Array<Record<string, any>>;
   fuse: Array<{index: string; fuse: any}>;
   objects: Array<{index: FileName; values: Array<Record<string, any>>}>;
   searchIsReady: boolean;
   cip13Result: Record<string, any>;
   cisResult: Array<{index: FileName; result: Record<string, any>}>;
+  downloadIsEnded: boolean;
+  numberOfDownload: number;
 };
 
 type AppStore = {
@@ -32,19 +33,26 @@ type AppStore = {
 } & AppInitialState;
 
 const initialState: AppInitialState = {
-  numDownloaded: 0,
   allResult: [],
   fuse: [],
   objects: [],
   searchIsReady: false,
   cip13Result: {},
   cisResult: [],
+  downloadIsEnded: false,
+  numberOfDownload: 0,
 };
 
 const useStore = create<AppStore>(
   (set: SetState<AppStore>, get: GetState<AppStore>) => ({
     ...initialState,
     downloadAll: async () => {
+      set(state => ({
+        ...state,
+        downloadIsEnded: false,
+        fuse: [],
+        objects: [],
+      }));
       await clearAllAsync();
       const queue = new PQueue({concurrency: 1});
       Config.downloadUrl.forEach(
@@ -52,7 +60,7 @@ const useStore = create<AppStore>(
           if (isForDownload) {
             await queue.add(async () => {
               const file = await downloadFile(url);
-              const json = await txtToArrJson(header, txtConverter(file));
+              const json = await txtToArrJson(header, bufferToText(file));
               if (searchIndexes) {
                 const fuseIndex = Fuse.createIndex(searchIndexes.keys, json);
                 await storeAsync(`${name}_INDEX`, fuseIndex);
@@ -74,6 +82,7 @@ const useStore = create<AppStore>(
               await storeAsync(name, json);
               set(state => ({
                 ...state,
+                numberOfDownload: state.numberOfDownload + 1,
                 objects: removeDuplicateObject(
                   [
                     ...state.objects,
@@ -85,19 +94,22 @@ const useStore = create<AppStore>(
                   'index',
                 ),
               }));
-              set(state => ({
-                ...state,
-                numDownloaded: state.numDownloaded + 1,
-              }));
             });
           }
         },
       );
+      await queue.onIdle();
+      set(state => ({
+        ...state,
+        downloadIsEnded: true,
+      }));
     },
-    restoreSearch: () => {
+    restoreSearch: async () => {
       set(state => ({
         ...state,
         searchIsReady: false,
+        fuse: [],
+        objects: [],
       }));
       const queue = new PQueue({concurrency: 1});
       Config.downloadUrl.forEach(async ({name, searchIndexes}) => {
@@ -140,6 +152,7 @@ const useStore = create<AppStore>(
           }
         });
       });
+      await queue.onIdle();
       set(state => ({
         ...state,
         searchIsReady: true,

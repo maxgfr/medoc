@@ -15,14 +15,12 @@ export const txtToArrJson = (
   });
 };
 
-export const txtConverter = (
-  data: string,
-  inputFormat = ' ISO-8859-1',
-  outputFormat = 'win1252',
+export const bufferToText = (
+  buffer: Buffer,
+  inputFormat = 'ISO-8859-1',
 ): string => {
-  const input = iconv.encode(data, inputFormat);
-  const str = iconv.decode(input, outputFormat);
-  return str.toString();
+  const input = iconv.decode(buffer, inputFormat);
+  return input.toString();
 };
 
 export const urlify = (text: string): string => {

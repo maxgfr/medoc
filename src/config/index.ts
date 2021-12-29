@@ -133,7 +133,7 @@ export const Config = {
       name: FileName.CIS_InfoImportantes,
       header: ['cis', 'date_debut', 'date_fin', 'avis'],
       estimatedOctet: 7100 * 1024,
-      isForDownload: true,
+      isForDownload: false,
     },
   ],
 };
