@@ -19,8 +19,7 @@ type AppInitialState = {
   searchIsReady: boolean;
   cip13Result: Record<string, any>;
   cisResult: Array<{index: FileName; result: Record<string, any>}>;
-  downloadIsEnded: boolean;
-  numberOfDownload: number;
+  progress: number;
 };
 
 type AppStore = {
@@ -39,8 +38,7 @@ const initialState: AppInitialState = {
   searchIsReady: false,
   cip13Result: {},
   cisResult: [],
-  downloadIsEnded: false,
-  numberOfDownload: 0,
+  progress: 0,
 };
 
 const useStore = create<AppStore>(
@@ -49,12 +47,17 @@ const useStore = create<AppStore>(
     downloadAll: async () => {
       set(state => ({
         ...state,
-        downloadIsEnded: false,
+        searchIsReady: false,
         fuse: [],
         objects: [],
+        progress: 0,
       }));
       await clearAllAsync();
       const queue = new PQueue({concurrency: 1});
+      const numberOfDownloadFiles = Config.downloadUrl.reduce(
+        (acc, cur) => (cur.isForDownload ? acc + 1 : acc),
+        0,
+      );
       Config.downloadUrl.forEach(
         async ({url, header, isForDownload, name, searchIndexes}) => {
           if (isForDownload) {
@@ -82,7 +85,9 @@ const useStore = create<AppStore>(
               await storeAsync(name, json);
               set(state => ({
                 ...state,
-                numberOfDownload: state.numberOfDownload + 1,
+                progress: parseFloat(
+                  (state.progress + 100 / numberOfDownloadFiles).toFixed(2),
+                ),
                 objects: removeDuplicateObject(
                   [
                     ...state.objects,
@@ -99,9 +104,13 @@ const useStore = create<AppStore>(
         },
       );
       await queue.onIdle();
+      await storeAsync('DB', {
+        date: new Date().toLocaleDateString('fr-FR'),
+      });
       set(state => ({
         ...state,
-        downloadIsEnded: true,
+        searchIsReady: true,
+        progress: 100,
       }));
     },
     restoreSearch: async () => {
@@ -110,6 +119,7 @@ const useStore = create<AppStore>(
         searchIsReady: false,
         fuse: [],
         objects: [],
+        progress: 0,
       }));
       const queue = new PQueue({concurrency: 1});
       Config.downloadUrl.forEach(async ({name, searchIndexes}) => {
@@ -156,6 +166,7 @@ const useStore = create<AppStore>(
       set(state => ({
         ...state,
         searchIsReady: true,
+        progress: 100,
       }));
     },
     searchAll: (search: string) => {

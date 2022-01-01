@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {widthPercentageToDP} from 'react-native-responsive-screen';
 
 type Props = {
   onRead: (e: any) => void;
@@ -32,8 +32,8 @@ export const Camera = (props: Props) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    height: wp('100%'),
-    width: wp('100%'),
+    height: widthPercentageToDP('100%'),
+    width: widthPercentageToDP('100%'),
   },
   cameraStyle: {
     alignSelf: 'center',

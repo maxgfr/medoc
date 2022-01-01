@@ -3,6 +3,7 @@ import {View, Text, Dimensions, Linking, Alert, StyleSheet} from 'react-native';
 import {Button} from 'native-base';
 import {TextMl} from './Textml';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
+import {theme} from '../theme';
 
 //TODO: type correctly
 type Props = {
@@ -22,7 +23,7 @@ export function Medocomponent(props: Props) {
         const result = await InAppBrowser.open(link, {
           // iOS Properties
           dismissButtonStyle: 'cancel',
-          preferredBarTintColor: '#3028c9',
+          preferredBarTintColor: theme.colors.tint,
           preferredControlTintColor: 'white',
           readerMode: false,
           animated: true,
@@ -32,7 +33,7 @@ export function Medocomponent(props: Props) {
           enableBarCollapsing: false,
           // Android Properties
           showTitle: true,
-          toolbarColor: '#3028c9',
+          toolbarColor: theme.colors.tint,
           secondaryToolbarColor: 'black',
           navigationBarColor: 'black',
           navigationBarDividerColor: 'white',
@@ -352,28 +353,32 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   button: {
-    color: '#3028c9',
+    color: theme.colors.tint,
     justifyContent: 'center',
     width: Dimensions.get('window').width / 3.5,
   },
   textButton: {
-    color: '#ffffff',
-    fontSize: 12,
+    color: theme.colors.text,
+    fontSize: 10,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   container: {
     margin: 6,
     borderRadius: 10,
-    backgroundColor: '#272830',
+    backgroundColor: theme.colors.itemBackground,
     justifyContent: 'center',
     padding: 20,
   },
   title: {
-    color: '#e3e4e8',
-    fontSize: 18,
+    color: theme.colors.text,
+    fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 7,
   },
-  text: {color: '#e3e4e8', fontSize: 15, marginTop: 5},
+  text: {
+    color: theme.colors.text,
+    fontSize: 12,
+    marginTop: 5,
+  },
 });
