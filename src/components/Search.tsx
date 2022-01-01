@@ -4,10 +4,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type Props = {
   onChange: (value: string) => void;
-  value: string;
 };
 
-export function Search({onChange, value}: Props) {
+export function Search({onChange}: Props) {
   return (
     <VStack width="100%" space={5} alignItems="center" mt="5">
       <Input
@@ -18,7 +17,6 @@ export function Search({onChange, value}: Props) {
         py="3"
         px="1"
         onChangeText={onChange}
-        value={value}
         color="gray.400"
         InputLeftElement={
           <Icon

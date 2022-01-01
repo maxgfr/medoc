@@ -1,4 +1,4 @@
-import {Box, FlatList} from 'native-base';
+import {Box} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Modal} from '../src/components/Modal';
 import {Search} from '../src/components/Search';
@@ -9,18 +9,21 @@ import {getAsync} from '../src/helpers';
 import useStore from '../src/store';
 import {theme} from '../src/theme';
 
-function HomeScreen() {
+export default function HomeScreen() {
   const [searchValue, setSearchValue] = useState('');
-  const downloadAll = useStore(state => state.downloadAll);
-  const restoreSearch = useStore(state => state.restoreSearch);
-  const searchAll = useStore(state => state.searchAll);
-  const searchByCis = useStore(state => state.searchByCis);
-  const searchByCip13 = useStore(state => state.searchByCip13);
-  const searchIsReady = useStore(state => state.searchIsReady);
-  const allResult = useStore(state => state.allResult);
-  const cip13Result = useStore(state => state.cip13Result);
-  const cisResult = useStore(state => state.cisResult);
-  const progress = useStore(state => state.progress);
+  const {downloadAll, searchAll, searchByCis, restoreSearch} = useStore(
+    state => ({
+      downloadAll: state.downloadAll,
+      searchAll: state.searchAll,
+      searchByCis: state.searchByCis,
+      restoreSearch: state.restoreSearch,
+    }),
+  );
+  const {searchIsReady, allResult, progress} = useStore(state => ({
+    searchIsReady: state.searchIsReady,
+    allResult: state.allResult,
+    progress: state.progress,
+  }));
 
   useEffect(() => {
     getAsync('DB')
@@ -34,7 +37,7 @@ function HomeScreen() {
 
   const onSearch = (value: string) => {
     setSearchValue(value);
-    // searchAll(value);
+    searchAll(value);
   };
 
   const onClickItem = (cis: string) => {
@@ -53,59 +56,28 @@ function HomeScreen() {
           hasLoader={!searchIsReady}
         />
       )}
-      <FlatList
-        data={allResult}
-        renderItem={({item}) => (
-          <SearchItem
-            onClick={() => onClickItem(item.cis)}
-            name={item.denomination_medicament}
-          />
-        )}
-        ListHeaderComponent={() => (
-          <Box>
-            <Search onChange={onSearch} value={searchValue} />
+      <Box>
+        <Search onChange={onSearch} />
+        {searchValue === '' && (
+          <>
             <TouchableItem
-              onClick={onClickCamera}
+              onClick={downloadAll}
               name="Mettre à jour la base de données"
             />
             <TouchableItem
               name="Effectuez une recherche avec l'appareil photo de votre smartphone"
               onClick={onClickCamera}
             />
-          </Box>
+          </>
         )}
-      />
+        {allResult.map((item, index) => (
+          <SearchItem
+            key={index}
+            onClick={() => onClickItem(item.item.cis)}
+            name={item.item.denomination_medicament}
+          />
+        ))}
+      </Box>
     </Box>
-    // <ScrollView>
-    //   <Box>{downloadIsEnded.toString()}</Box>
-    //   <Box>{searchIsReady.toString()}</Box>
-    //   <Box>{numberOfDownload.toString()}</Box>
-    //   <Box>{JSON.stringify(allResult, null, 2)}</Box>
-    //   <Box>{JSON.stringify(cip13Result, null, 2)}</Box>
-    //   <Box>{JSON.stringify(cisResult, null, 2)}</Box>
-    //   <Button onPress={downloadAll}>Download all</Button>
-    //   <Button onPress={clear}>Clear all</Button>
-    //   <Button onPress={restoreSearch}>Restore search</Button>
-    //   <Button
-    //     onPress={() => {
-    //       searchByCis('64793681');
-    //     }}>
-    //     Search by CIS
-    //   </Button>
-    //   <Button
-    //     onPress={() => {
-    //       searchAll('doliprane');
-    //     }}>
-    //     Search collection doliprane
-    //   </Button>
-    //   <Button
-    //     onPress={() => {
-    //       searchByCip13('3400934998331');
-    //     }}>
-    //     Search collection by cip
-    //   </Button>
-    // </ScrollView>
   );
 }
-
-export default HomeScreen;

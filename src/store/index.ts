@@ -172,7 +172,7 @@ const useStore = create<AppStore>(
     searchAll: (search: string) => {
       let result: Array<Record<string, any>> = [];
       get().fuse.forEach(({fuse}) => {
-        result = [...result, ...fuse.search(search)];
+        result = [...result, ...fuse.search(search, {limit: 25})];
       });
       result = result.sort((a, b) =>
         a.score < b.score ? -1 : a.score > b.score ? 1 : 0,
