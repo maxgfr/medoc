@@ -9,4 +9,5 @@ L'application n'utilise aucun serveur pour pouvoir récupérer les données publ
 ```sh
 yarn # installation des dépendances
 yarn android # lancement de l'application sur android
+keytool -genkey -v -keystore key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key # to generate signing key
 ```
