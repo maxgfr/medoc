@@ -7,6 +7,6 @@ L'application n'utilise aucun serveur pour pouvoir récupérer les données publ
 ## Installation
 
 ```sh
-yarn # to install dependencies
-yarn android # to run on android
+yarn # installation des dépendances
+yarn android # lancement de l'application sur android
 ```
