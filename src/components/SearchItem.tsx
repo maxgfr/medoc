@@ -19,8 +19,8 @@ export function SearchItem({name, onClick}: Props) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    margin: 6,
     borderRadius: 10,
+    marginTop: 15,
     backgroundColor: theme.colors.itemBackground,
     alignItems: 'center',
     justifyContent: 'center',

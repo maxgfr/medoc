@@ -22,6 +22,10 @@ type HistoricItem = {
   name: string;
 };
 
+type LatestUpdate = {
+  date: string;
+};
+
 type AppInitialState = {
   allResult: Array<Record<string, any>>;
   fuse: Array<{index: string; fuse: any}>;
@@ -30,6 +34,7 @@ type AppInitialState = {
   cisResult: ArrayOfResults;
   progress: number;
   historic: Array<HistoricItem>;
+  lastUpdate: string;
 };
 
 type AppStore = {
@@ -40,6 +45,8 @@ type AppStore = {
   restoreSearch: () => void;
   clear: () => void;
   getHistoric: () => void;
+  getLatestUpdate: () => void;
+  initSearch: () => void;
 } & AppInitialState;
 
 const initialState: AppInitialState = {
@@ -50,11 +57,18 @@ const initialState: AppInitialState = {
   cisResult: [],
   progress: 0,
   historic: [],
+  lastUpdate: new Date().toLocaleDateString('fr-FR'),
 };
 
 const useStore = create<AppStore>(
   (set: SetState<AppStore>, get: GetState<AppStore>) => ({
     ...initialState,
+    initSearch: () => {
+      set(state => ({
+        ...state,
+        allResult: [],
+      }));
+    },
     downloadAll: async () => {
       set(state => ({
         ...state,
@@ -115,13 +129,14 @@ const useStore = create<AppStore>(
         },
       );
       await queue.onIdle();
-      await storeAsync(StorageKey.DB, {
+      await storeAsync<LatestUpdate>(StorageKey.DB, {
         date: new Date().toLocaleDateString('fr-FR'),
       });
       set(state => ({
         ...state,
         searchIsReady: true,
         progress: 100,
+        lastUpdate: new Date().toLocaleDateString('fr-FR'),
       }));
     },
     restoreSearch: async () => {
@@ -200,7 +215,7 @@ const useStore = create<AppStore>(
         if (index === FileName.CIS_bdpm) {
           const find = values.find(v => v.cis === search);
           if (find) {
-            foundItem = {name: find?.name, cis: find?.cis};
+            foundItem = {name: find?.denomination_medicament, cis: find?.cis};
           }
         }
         res = [
@@ -213,7 +228,7 @@ const useStore = create<AppStore>(
         historic = historic.find(v => v.cis === foundItem?.cis)
           ? historic
           : [foundItem, ...historic.slice(0, 10)];
-        await storeAsync<Array<HistoricItem>>(StorageKey.DB, historic);
+        await storeAsync<Array<HistoricItem>>(StorageKey.HISTORIC, historic);
       }
       set(state => ({
         ...state,
@@ -233,7 +248,10 @@ const useStore = create<AppStore>(
               if (item.index === FileName.CIS_bdpm) {
                 const find = item.values.find(v => v.cis === cipResult?.cis);
                 if (find) {
-                  foundItem = {name: find?.name, cis: find?.cis};
+                  foundItem = {
+                    name: find?.denomination_medicament,
+                    cis: find?.cis,
+                  };
                 }
               }
               res = [
@@ -270,6 +288,14 @@ const useStore = create<AppStore>(
         set(state => ({
           ...state,
           historic: historic ?? [],
+        }));
+      });
+    },
+    getLatestUpdate: async () => {
+      getAsync<LatestUpdate>(StorageKey.DB).then(v => {
+        set(state => ({
+          ...state,
+          lastUpdate: v.date,
         }));
       });
     },

@@ -9,6 +9,9 @@ import {NativeBaseProvider, StatusBar} from 'native-base';
 import {theme} from './src/theme';
 import CameraScreen from './pages/Camera';
 import MedocScreen from './pages/Medoc';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 const NavigationTheme = {
   ...DefaultTheme,

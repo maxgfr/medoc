@@ -10,38 +10,67 @@ import {theme} from '../src/theme';
 import {useCamera} from '../src/hooks/useCamera';
 import {HomeProps} from '../App';
 import {StorageKey} from '../src/config';
+import {BackHandler} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function HomeScreen({navigation}: HomeProps) {
   const [searchValue, setSearchValue] = useState('');
-  const [lastUpdate, setLastUpdate] = useState(
-    new Date().toLocaleDateString('fr-FR'),
-  );
-  const {downloadAll, searchAll, searchByCis, restoreSearch} = useStore(
+  const {
+    downloadAll,
+    searchAll,
+    searchByCis,
+    restoreSearch,
+    getHistoric,
+    getLatestUpdate,
+    initSearch,
+  } = useStore(state => ({
+    downloadAll: state.downloadAll,
+    searchAll: state.searchAll,
+    searchByCis: state.searchByCis,
+    restoreSearch: state.restoreSearch,
+    getHistoric: state.getHistoric,
+    getLatestUpdate: state.getLatestUpdate,
+    initSearch: state.initSearch,
+  }));
+  const {searchIsReady, allResult, progress, historic, lastUpdate} = useStore(
     state => ({
-      downloadAll: state.downloadAll,
-      searchAll: state.searchAll,
-      searchByCis: state.searchByCis,
-      restoreSearch: state.restoreSearch,
+      searchIsReady: state.searchIsReady,
+      allResult: state.allResult,
+      progress: state.progress,
+      historic: state.historic,
+      lastUpdate: state.lastUpdate,
     }),
   );
-  const {searchIsReady, allResult, progress, historic} = useStore(state => ({
-    searchIsReady: state.searchIsReady,
-    allResult: state.allResult,
-    progress: state.progress,
-    historic: state.historic,
-  }));
   const {requestCameraPermissions} = useCamera();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (searchValue) {
+          setSearchValue('');
+          initSearch();
+        }
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [initSearch, searchValue]),
+  );
 
   useEffect(() => {
     getAsync(StorageKey.DB)
-      .then((res: any) => {
-        setLastUpdate(res.date);
+      .then(() => {
+        getLatestUpdate();
         restoreSearch();
+        getHistoric();
       })
       .catch(() => {
         downloadAll();
       });
-  }, [downloadAll, restoreSearch]);
+  }, [downloadAll, restoreSearch, getHistoric, getLatestUpdate]);
 
   const onSearch = (value: string) => {
     setSearchValue(value);
@@ -64,13 +93,13 @@ export default function HomeScreen({navigation}: HomeProps) {
       {!searchIsReady && (
         <Modal
           visible={true}
-          content="Chargement des données. L'opération peut durer quelques minutes"
+          content="Chargement des données. L'opération peut durer quelques minutes..."
           progress={progress}
           hasLoader={!searchIsReady}
         />
       )}
       <ScrollView>
-        <Search onChange={onSearch} />
+        <Search onChange={onSearch} value={searchValue} />
         {searchValue === '' && (
           <>
             <TouchableItem

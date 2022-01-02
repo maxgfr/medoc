@@ -5,9 +5,10 @@ import {theme} from '../theme';
 
 type Props = {
   onChange: (value: string) => void;
+  value: string;
 };
 
-export function Search({onChange}: Props) {
+export function Search({onChange, value}: Props) {
   return (
     <VStack width="100%" space={5} alignItems="center" mt="5">
       <Input
@@ -19,6 +20,7 @@ export function Search({onChange}: Props) {
         px="1"
         onChangeText={onChange}
         color={theme.colors.text}
+        value={value}
         borderColor={theme.colors.text}
         InputLeftElement={
           <Icon
