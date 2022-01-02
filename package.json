@@ -8,7 +8,6 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "node scripts/rn-fetch-blob_warning.js",
     "icon": "react-native-svg-app-icon"
   },
   "dependencies": {

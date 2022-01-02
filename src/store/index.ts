@@ -1,5 +1,5 @@
 import create, {GetState, SetState} from 'zustand';
-import {Config, FileName} from '../config';
+import {Config, FileName, StorageKey} from '../config';
 import {
   clearAllAsync,
   downloadFile,
@@ -17,14 +17,19 @@ type ArrayOfResults = Array<{
   values: Array<Record<string, any>>;
 }>;
 
+type HistoricItem = {
+  cis: string;
+  name: string;
+};
+
 type AppInitialState = {
   allResult: Array<Record<string, any>>;
   fuse: Array<{index: string; fuse: any}>;
   objects: ArrayOfResults;
   searchIsReady: boolean;
-  cip13Result: Record<string, any>;
   cisResult: ArrayOfResults;
   progress: number;
+  historic: Array<HistoricItem>;
 };
 
 type AppStore = {
@@ -34,6 +39,7 @@ type AppStore = {
   searchByCip13: (search: string) => void;
   restoreSearch: () => void;
   clear: () => void;
+  getHistoric: () => void;
 } & AppInitialState;
 
 const initialState: AppInitialState = {
@@ -41,9 +47,9 @@ const initialState: AppInitialState = {
   fuse: [],
   objects: [],
   searchIsReady: false,
-  cip13Result: {},
   cisResult: [],
   progress: 0,
+  historic: [],
 };
 
 const useStore = create<AppStore>(
@@ -109,7 +115,7 @@ const useStore = create<AppStore>(
         },
       );
       await queue.onIdle();
-      await storeAsync('DB', {
+      await storeAsync(StorageKey.DB, {
         date: new Date().toLocaleDateString('fr-FR'),
       });
       set(state => ({
@@ -187,34 +193,85 @@ const useStore = create<AppStore>(
         allResult: result,
       }));
     },
-    searchByCis: (search: string) => {
+    searchByCis: async (search: string) => {
       let res: ArrayOfResults = [];
+      let foundItem: HistoricItem | undefined;
       get().objects.forEach(({index, values}) => {
+        if (index === FileName.CIS_bdpm) {
+          const find = values.find(v => v.cis === search);
+          if (find) {
+            foundItem = {name: find?.name, cis: find?.cis};
+          }
+        }
         res = [
           ...res,
           {index, values: values?.filter(item => item.cis === search) ?? []},
         ];
       });
+      let historic: Array<HistoricItem> = get().historic;
+      if (foundItem) {
+        historic = historic.find(v => v.cis === foundItem?.cis)
+          ? historic
+          : [foundItem, ...historic.slice(0, 10)];
+        await storeAsync<Array<HistoricItem>>(StorageKey.DB, historic);
+      }
       set(state => ({
         ...state,
         cisResult: res,
+        historic,
       }));
     },
-    searchByCip13: (search: string) => {
-      let result: Record<string, any> | undefined = {};
+    searchByCip13: async (search: string) => {
+      let res: ArrayOfResults = [];
+      let cipResult: Record<string, any> | undefined;
+      let foundItem: HistoricItem | undefined;
       get().objects.forEach(({index, values}) => {
         if (index === FileName.CIS_CIP_bdpm) {
-          result = values.find(item => item.cip13 === search);
+          cipResult = values.find(item => item.cip13 === search);
+          if (cipResult) {
+            get().objects.forEach(item => {
+              if (item.index === FileName.CIS_bdpm) {
+                const find = item.values.find(v => v.cis === cipResult?.cis);
+                if (find) {
+                  foundItem = {name: find?.name, cis: find?.cis};
+                }
+              }
+              res = [
+                ...res,
+                {
+                  index: item.index,
+                  values:
+                    item.values?.filter(v => v.cis === cipResult?.cis) ?? [],
+                },
+              ];
+            });
+          }
         }
       });
+      let historic: Array<HistoricItem> = get().historic;
+      if (foundItem) {
+        historic = historic.find(v => v.cis === foundItem?.cis)
+          ? historic
+          : [foundItem, ...historic.slice(0, 10)];
+        await storeAsync<Array<HistoricItem>>(StorageKey.HISTORIC, historic);
+      }
       set(state => ({
         ...state,
-        cip13Result: result ?? {},
+        cisResult: res,
+        historic,
       }));
     },
     clear: async () => {
       await clearAllAsync();
       set(initialState);
+    },
+    getHistoric: async () => {
+      getAsync<Array<HistoricItem>>(StorageKey.HISTORIC).then(historic => {
+        set(state => ({
+          ...state,
+          historic: historic ?? [],
+        }));
+      });
     },
   }),
 );

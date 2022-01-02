@@ -10,6 +10,11 @@ export enum FileName {
   CIS_InfoImportantes = 'CIS_InfoImportantes',
 }
 
+export enum StorageKey {
+  HISTORIC = 'historic',
+  DB = 'db',
+}
+
 export const Config = {
   downloadUrl: [
     {

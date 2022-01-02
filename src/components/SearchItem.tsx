@@ -28,5 +28,6 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.text,
     textAlign: 'center',
+    fontSize: 12,
   },
 });

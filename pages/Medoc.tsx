@@ -27,6 +27,9 @@ export default function MedocScreen() {
           cisResult.find(item => item.index === FileName.CIS_InfoImportantes)
             ?.values
         }
+        genericData={
+          cisResult.find(item => item.index === FileName.CIS_GENER_bdpm)?.values
+        }
         conditionData={
           cisResult.find(item => item.index === FileName.CIS_CPD_bdpm)?.values
         }

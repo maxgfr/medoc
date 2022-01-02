@@ -5,7 +5,7 @@ import {theme} from '../theme';
 
 type Props = {
   name: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
 };
 

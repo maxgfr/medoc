@@ -1,10 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ClearCache from 'react-native-clear-cache';
 
-export async function storeAsync(
-  key: string,
-  data: Record<string, any> | Array<Record<string, any>>,
-): Promise<void> {
+export async function storeAsync<T>(key: string, data: T): Promise<void> {
   return new Promise(async (resolve, reject) => {
     try {
       const store = JSON.stringify(data).match(/.{1,1000000}/g);
@@ -19,9 +16,7 @@ export async function storeAsync(
   });
 }
 
-export async function getAsync(
-  key: string,
-): Promise<Record<string, any> | Array<Record<string, any>>> {
+export async function getAsync<T>(key: string): Promise<T> {
   return new Promise(async (resolve, reject) => {
     try {
       let store = '';

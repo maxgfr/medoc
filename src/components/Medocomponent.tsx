@@ -13,7 +13,6 @@ import {TextMl} from './Textml';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {theme} from '../theme';
 
-//TODO: type correctly
 type Props = {
   generalData: any;
   cipData: any;
@@ -22,6 +21,7 @@ type Props = {
   conditionData: any;
   smrData: any;
   asmrData: any;
+  genericData: any;
 };
 
 export function Medocomponent(props: Props) {
@@ -345,6 +345,32 @@ export function Medocomponent(props: Props) {
             ) : null}
             {item.libelle_asmr ? (
               <Text style={styles.text}>{item.libelle_asmr}</Text>
+            ) : null}
+          </View>
+        );
+      })}
+
+      {props.genericData?.map((item: any, index: number) => {
+        return (
+          <View key={index} style={styles.container}>
+            <Text style={styles.title}>Générique</Text>
+            {item.id_generique ? (
+              <Text style={styles.text}>
+                Identifiant du générique : {item.id_generique}
+              </Text>
+            ) : null}
+            {item.libelle_generique ? (
+              <Text style={styles.text}>
+                Nom du générique : {item.libelle_generique}
+              </Text>
+            ) : null}
+            {item.type_generique ? (
+              <Text style={styles.text}>
+                Type du générique : {item.type_generique}
+              </Text>
+            ) : null}
+            {item.num_tri ? (
+              <Text style={styles.text}>Numéro du tri : {item.num_tri}</Text>
             ) : null}
           </View>
         );
