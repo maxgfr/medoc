@@ -32,7 +32,7 @@ jobs:
         run: cd android && ./gradlew bundleRelease --no-daemon
       - name: Sign App Bundle
         id: sign_app
-        uses: r0adkll/sign-android-release@v1
+        uses: r0adkll/sign-android-release@v1.0.4
         with:
           releaseDirectory: android/app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
