@@ -7,12 +7,13 @@ on:
 
 jobs:
   build-android:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Install dependencies
-        run: |
-          yarn
+        run: yarn
       - name: Cache Gradle Wrapper
         uses: actions/cache@v2
         with:
@@ -28,8 +29,7 @@ jobs:
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
       - name: Build Android App Bundle
-        run: |
-          cd android && ./gradlew bundleRelease --no-daemon
+        run: cd android && ./gradlew bundleRelease
       - name: Sign App Bundle
         id: sign_app
         uses: r0adkll/sign-android-release@v1
