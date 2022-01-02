@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, Dimensions, Linking, Alert, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  Linking,
+  Alert,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import {Button} from 'native-base';
 import {TextMl} from './Textml';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
@@ -20,7 +28,7 @@ export function Medocomponent(props: Props) {
   const onPress = async (link: string) => {
     try {
       if (await InAppBrowser.isAvailable()) {
-        const result = await InAppBrowser.open(link, {
+        await InAppBrowser.open(link, {
           // iOS Properties
           dismissButtonStyle: 'cancel',
           preferredBarTintColor: theme.colors.tint,
@@ -52,7 +60,6 @@ export function Medocomponent(props: Props) {
             'my-custom-header': 'Médoc',
           },
         });
-        Alert.alert(JSON.stringify(result));
       } else {
         Linking.openURL(link);
       }
@@ -62,8 +69,8 @@ export function Medocomponent(props: Props) {
   };
 
   return (
-    <View>
-      {props.generalData.map((item: any, index: number) => {
+    <ScrollView>
+      {props.generalData?.map((item: any, index: number) => {
         return (
           <React.Fragment key={index}>
             <View style={styles.rowContainer}>
@@ -102,7 +109,7 @@ export function Medocomponent(props: Props) {
                       '-0',
                   );
                 }}>
-                <Text style={styles.button}>Notice</Text>
+                <Text style={styles.textButton}>Notice</Text>
               </Button>
             </View>
             <View style={styles.container}>
@@ -164,7 +171,7 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.cipData.map((item: any, index: number) => {
+      {props.cipData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>Présentation</Text>
@@ -229,7 +236,7 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.compoData.map((item: any, index: number) => {
+      {props.compoData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>Substance actives</Text>
@@ -264,19 +271,19 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.infoData.map((item: any, index: number) => {
+      {props.infoData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>Informations importantes</Text>
-            {item.from_date && item.to_date ? (
+            {item.date_debut && item.date_fin ? (
               <Text style={styles.text}>
-                Du {item.from_date} au {item.to_date}{' '}
+                Du {item.date_debut} au {item.date_fin}
               </Text>
             ) : null}
-            {item.text ? (
+            {item.avis ? (
               <TextMl
                 textStyle={styles.text}
-                text={item.text}
+                text={item.avis}
                 onPress={onPress}
               />
             ) : null}
@@ -284,7 +291,7 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.conditionData.map((item: any, index: number) => {
+      {props.conditionData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>Condition de prescriptions</Text>
@@ -295,7 +302,7 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.smrData.map((item: any, index: number) => {
+      {props.smrData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>Avis SMR (Service médical rendu)</Text>
@@ -317,7 +324,7 @@ export function Medocomponent(props: Props) {
         );
       })}
 
-      {props.asmrData.map((item: any, index: number) => {
+      {props.asmrData?.map((item: any, index: number) => {
         return (
           <View key={index} style={styles.container}>
             <Text style={styles.title}>
@@ -342,7 +349,7 @@ export function Medocomponent(props: Props) {
           </View>
         );
       })}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -353,7 +360,7 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   button: {
-    color: theme.colors.tint,
+    backgroundColor: theme.colors.tint,
     justifyContent: 'center',
     width: Dimensions.get('window').width / 3.5,
   },

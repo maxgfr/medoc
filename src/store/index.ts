@@ -12,13 +12,18 @@ import {
 import PQueue from 'p-queue/dist';
 import Fuse from 'fuse.js';
 
+type ArrayOfResults = Array<{
+  index: FileName;
+  values: Array<Record<string, any>>;
+}>;
+
 type AppInitialState = {
   allResult: Array<Record<string, any>>;
   fuse: Array<{index: string; fuse: any}>;
-  objects: Array<{index: FileName; values: Array<Record<string, any>>}>;
+  objects: ArrayOfResults;
   searchIsReady: boolean;
   cip13Result: Record<string, any>;
-  cisResult: Array<{index: FileName; result: Record<string, any>}>;
+  cisResult: ArrayOfResults;
   progress: number;
 };
 
@@ -183,11 +188,11 @@ const useStore = create<AppStore>(
       }));
     },
     searchByCis: (search: string) => {
-      let res: Array<{index: FileName; result: Record<string, any>}> = [];
+      let res: ArrayOfResults = [];
       get().objects.forEach(({index, values}) => {
         res = [
           ...res,
-          {index, result: values.find(item => item.cis === search) ?? {}},
+          {index, values: values?.filter(item => item.cis === search) ?? []},
         ];
       });
       set(state => ({

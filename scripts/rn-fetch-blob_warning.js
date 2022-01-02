@@ -13,13 +13,13 @@ const files = [
 files.forEach(file => {
   fs.readFile(file, 'utf8', function (err, data) {
     if (err) {
-      return console.log(err);
+      return console.error(err);
     }
 
     var result = data.replace(new RegExp(replaced, 'g'), replacement);
     fs.writeFile(file, result, 'utf8', function (err) {
       if (err) {
-        return console.log(err);
+        return console.error(err);
       }
     });
   });

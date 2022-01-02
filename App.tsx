@@ -1,8 +1,11 @@
 import * as React from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import HomeScreen from './pages/Home';
-import {NativeBaseProvider} from 'native-base';
+import {NativeBaseProvider, StatusBar} from 'native-base';
 import {theme} from './src/theme';
 import CameraScreen from './pages/Camera';
 import MedocScreen from './pages/Medoc';
@@ -15,11 +18,29 @@ const NavigationTheme = {
     text: theme.colors.text,
   },
 };
-const Stack = createNativeStackNavigator();
+
+type RootStackParamList = {
+  Médoc: undefined;
+  'Recherche par code-barre': undefined;
+  Médicament: undefined;
+};
+
+export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Médoc'>;
+export type ItemProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Médicament'
+>;
+export type CameraProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Recherche par code-barre'
+>;
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   return (
     <NativeBaseProvider>
+      <StatusBar animated={true} backgroundColor={theme.colors.background} />
       <NavigationContainer theme={NavigationTheme}>
         <Stack.Navigator>
           <Stack.Screen name="Médoc" component={HomeScreen} />

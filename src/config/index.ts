@@ -105,7 +105,7 @@ export const Config = {
       name: FileName.HAS_LiensPageCT_bdpm,
       header: ['has', 'lien_page_ct'],
       estimatedOctet: 431 * 1024,
-      isForDownload: true,
+      isForDownload: false,
     },
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt',
@@ -133,7 +133,7 @@ export const Config = {
       name: FileName.CIS_InfoImportantes,
       header: ['cis', 'date_debut', 'date_fin', 'avis'],
       estimatedOctet: 7100 * 1024,
-      isForDownload: false,
+      isForDownload: true,
     },
   ],
 };

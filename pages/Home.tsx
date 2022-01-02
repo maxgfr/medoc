@@ -1,4 +1,4 @@
-import {Box} from 'native-base';
+import {Box, ScrollView} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Modal} from '../src/components/Modal';
 import {Search} from '../src/components/Search';
@@ -7,10 +7,10 @@ import {TouchableItem} from '../src/components/TouchableItem';
 import {getAsync} from '../src/helpers';
 import useStore from '../src/store';
 import {theme} from '../src/theme';
-
 import {useCamera} from '../src/hooks/useCamera';
+import {HomeProps} from '../App';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}: HomeProps) {
   const [searchValue, setSearchValue] = useState('');
   const {downloadAll, searchAll, searchByCis, restoreSearch} = useStore(
     state => ({
@@ -44,16 +44,13 @@ export default function HomeScreen() {
 
   const onClickItem = (cis: string) => {
     searchByCis(cis);
+    navigation.navigate('Médicament');
   };
 
   const onClickCamera = () => {
-    requestCameraPermissions()
-      .then(() => {
-        console.log('ok');
-      })
-      .catch(() => {
-        console.log('non');
-      });
+    requestCameraPermissions().then(() => {
+      navigation.navigate('Recherche par code-barre');
+    });
   };
 
   return (
@@ -66,7 +63,7 @@ export default function HomeScreen() {
           hasLoader={!searchIsReady}
         />
       )}
-      <Box>
+      <ScrollView>
         <Search onChange={onSearch} />
         {searchValue === '' && (
           <>
@@ -87,7 +84,7 @@ export default function HomeScreen() {
             name={item.item.denomination_medicament}
           />
         ))}
-      </Box>
+      </ScrollView>
     </Box>
   );
 }
