@@ -1,9 +1,7 @@
 name: Build for android
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   build-android:
