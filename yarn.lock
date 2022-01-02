@@ -6980,10 +6980,6 @@ react-native-camera@^4.2.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-clear-cache@sowlutions/react-native-clear-cache:
-  version "1.0.0"
-  resolved "https://codeload.github.com/sowlutions/react-native-clear-cache/tar.gz/2a0fba4cc2425f4d7c9aaf794cdd4aa3b81fe50d"
-
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"
