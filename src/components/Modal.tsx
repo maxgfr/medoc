@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal as NativeBaseModal, Text} from 'native-base';
+import {Modal as NativeBaseModal, Progress, Text} from 'native-base';
 import {theme} from '../theme';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {ActivityIndicator} from 'react-native';
@@ -15,26 +15,24 @@ export function Modal({visible, content, hasLoader, progress}: Props) {
   return (
     <NativeBaseModal isOpen={visible} size={'lg'}>
       <NativeBaseModal.Content
-        bg={theme.colors.itemBackground}
+        bg={theme.colors.modalBackground}
         width={widthPercentageToDP('90%')}
         height={widthPercentageToDP('50%')}>
         <NativeBaseModal.Body
           justifyContent={'center'}
           alignItems={'center'}
           height={widthPercentageToDP('50%')}>
-          <Text
-            color={theme.colors.text}
-            mb={hasLoader ? '5' : '0'}
-            textAlign={'center'}>
+          <Text color={theme.colors.text} mb="5" textAlign={'center'}>
             {content}
           </Text>
           {progress ? (
-            <Text
-              color={theme.colors.text}
+            <Progress
+              value={progress}
+              colorScheme="light"
               mb={hasLoader ? '5' : '0'}
-              textAlign={'center'}>
-              {progress}%
-            </Text>
+              bg={theme.colors.text}
+              width="80%"
+            />
           ) : null}
           {hasLoader && (
             <ActivityIndicator size="large" color={theme.colors.text} />

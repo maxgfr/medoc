@@ -5,9 +5,10 @@ import {Search} from '../src/components/Search';
 import {SearchItem} from '../src/components/SearchItem';
 import {TouchableItem} from '../src/components/TouchableItem';
 import {getAsync} from '../src/helpers';
-
 import useStore from '../src/store';
 import {theme} from '../src/theme';
+
+import {useCamera} from '../src/hooks/useCamera';
 
 export default function HomeScreen() {
   const [searchValue, setSearchValue] = useState('');
@@ -24,6 +25,7 @@ export default function HomeScreen() {
     allResult: state.allResult,
     progress: state.progress,
   }));
+  const {requestCameraPermissions} = useCamera();
 
   useEffect(() => {
     getAsync('DB')
@@ -44,7 +46,15 @@ export default function HomeScreen() {
     searchByCis(cis);
   };
 
-  const onClickCamera = () => {};
+  const onClickCamera = () => {
+    requestCameraPermissions()
+      .then(() => {
+        console.log('ok');
+      })
+      .catch(() => {
+        console.log('non');
+      });
+  };
 
   return (
     <Box bg={theme.colors.background} width="100%" height="100%" px="5">
