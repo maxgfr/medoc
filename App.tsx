@@ -14,11 +14,12 @@ import {LogBox} from 'react-native';
 LogBox.ignoreAllLogs();
 
 const NavigationTheme = {
-  ...DefaultTheme,
+  dark: true,
   colors: {
     ...DefaultTheme.colors,
     card: theme.colors.background,
     text: theme.colors.text,
+    background: theme.colors.background,
   },
 };
 

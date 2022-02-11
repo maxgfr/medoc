@@ -12,6 +12,7 @@ import {Button} from 'native-base';
 import {TextMl} from './Textml';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {theme} from '../theme';
+import {Config} from '../config';
 
 type Props = {
   generalData: any;
@@ -77,10 +78,7 @@ export function Medocomponent(props: Props) {
               <Button
                 style={styles.button}
                 onPress={() => {
-                  onPress(
-                    'http://m.base-donnees-publique.medicaments.gouv.fr/#!info-' +
-                      item.cis,
-                  );
+                  onPress(Config.baseUrl.informations(item.cis));
                 }}>
                 <Text style={styles.textButton}>Informations</Text>
               </Button>
@@ -92,22 +90,14 @@ export function Medocomponent(props: Props) {
                   },
                 ])}
                 onPress={() => {
-                  onPress(
-                    'http://m.base-donnees-publique.medicaments.gouv.fr/#!rcp-' +
-                      item.cis +
-                      '-0',
-                  );
+                  onPress(Config.baseUrl.characteristics(item.cis));
                 }}>
                 <Text style={styles.textButton}>Caractéristiques</Text>
               </Button>
               <Button
                 style={styles.button}
                 onPress={() => {
-                  onPress(
-                    'http://m.base-donnees-publique.medicaments.gouv.fr/#!notice-' +
-                      item.cis +
-                      '-0',
-                  );
+                  onPress(Config.baseUrl.notice(item.cis));
                 }}>
                 <Text style={styles.textButton}>Notice</Text>
               </Button>

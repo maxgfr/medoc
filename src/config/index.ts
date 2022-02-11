@@ -16,6 +16,16 @@ export enum StorageKey {
 }
 
 export const Config = {
+  baseUrl: {
+    informations: (v: string) =>
+      'https://m.base-donnees-publique.medicaments.gouv.fr/#!info-' + v,
+    characteristics: (v: string) =>
+      'https://m.base-donnees-publique.medicaments.gouv.fr/#!rcp-' + v + '-0',
+    notice: (v: string) =>
+      'https://m.base-donnees-publique.medicaments.gouv.fr/#!notice-' +
+      v +
+      '-0',
+  },
   downloadUrl: [
     {
       url: 'https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt',
