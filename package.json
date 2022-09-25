@@ -29,7 +29,7 @@
     "react-native-qrcode-scanner": "^1.5.4",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.10.0",
+    "react-native-screens": "3.17.0",
     "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "^0.17.5",
