@@ -21,16 +21,25 @@ jobs:
           - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt"
           - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt"
           - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt"
+        word:
+          - "61266250"
+          - "60002283"
+          - "60002283"
+          - "60054077"
+          - "60054077"
+          - "CT-20086"
+          - "AMOXICILLINE"
+          - "60355340"
+          - "60000777"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Check if user can download file
         run: |
-          wget ${{ matrix.url }}
-          file=`echo ${{ matrix.url }} | awk -F"=" '{print $NF}'`
-          if [ -f "$file" ]; then
-            echo "The file $file was successfully downloaded."
+          curl ${{ matrix.url }} | grep -q ${{ matrix.word }}
+          if [ $? -eq 0 ]; then
+            echo "File is available"
           else
-            echo "The file download failed."
+            echo "File is not available"
             exit 1
           fi
