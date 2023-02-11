@@ -3,9 +3,13 @@ on:
   schedule:
     - cron: "00 12 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
-  bdd-medicaments:
+  check-bdd-medicaments:
+    name: Check URL from base de données publique des médicaments
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -37,7 +41,7 @@ jobs:
             word: '60355340'
           - url: >-
               https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt
-            word: '6000d0777'
+            word: '60000777'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
