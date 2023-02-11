@@ -24,11 +24,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Check if URL let user download file
+      - name: Check if user can download file
         run: |
           wget ${{ matrix.url }}
           file=`echo ${{ matrix.url }} | awk -F"=" '{print $NF}'`
-          if [ -f $file ]; then
+          if [ -f "$file" ]; then
             echo "The file $file was successfully downloaded."
           else
             echo "The file download failed."
