@@ -6,38 +6,45 @@ on:
 
 jobs:
   bdd-medicaments:
-    name: Check
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        url:
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt"
-          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt"
-        word:
-          - "61266250"
-          - "60002283"
-          - "60002283"
-          - "60054077"
-          - "60054077"
-          - "CT-20086"
-          - "AMOXICILLINE"
-          - "60355340"
-          - "60000777"
+        url-with-word:
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt
+            word: '61266250'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt
+            word: '60002283'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt
+            word: '60002283'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt
+            word: '60054077'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt
+            word: '60054077'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt
+            word: CT-20086
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt
+            word: AMOXICILLINE
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt
+            word: '60355340'
+          - url: >-
+              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt
+            word: '60000777'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Check if user can download file
         run: |
-          curl ${{ matrix.url }} | grep -q ${{ matrix.word }}
-          if [ $? -eq 0 ]; then
+          curl ${{ matrix.list.url }} | grep -q ${{ matrix.list.word }}
+          if [[ $? -eq 0 ]]; then
             echo "File is available"
           else
             echo "File is not available"
