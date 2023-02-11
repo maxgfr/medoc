@@ -1,0 +1,36 @@
+name: Check URL from base de données publique des médicaments
+on:
+  schedule:
+    - cron: "00 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  bdd-medicaments:
+    name: Check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        url:
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt"
+          - "https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check if URL let user download file
+        run: |
+          wget ${{ matrix.url }}
+          file=`echo ${{ matrix.url }} | awk -F"=" '{print $NF}'`
+          if [ -f $file ]; then
+            echo "The file $file was successfully downloaded."
+          else
+            echo "The file download failed."
+            exit 1
+          fi
