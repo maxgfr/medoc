@@ -1,7 +1,8 @@
 repo_name: maxgfr/medoc
 report_id: f00dc05aa53dca8064a3df69417a187d
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-10T09:18:08+00:00'
+timestamp: '2024-01-05T08:55:53+00:00'
 requested_by: maxgfr
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: JavaScript
   description: Lightweight, interpreted, object-oriented language with first-class
@@ -26,6 +28,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: Objective-C
   description: The primary programming language you use when writing software for
@@ -36,6 +39,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1008/xcode.png
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: Ruby
   description: A dynamic, interpreted, open source programming language with a focus
@@ -46,6 +50,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/989/ruby.png
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: TypeScript
   description: A superset of JavaScript that compiles to clean JavaScript output
@@ -56,6 +61,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1612/bynNY5dJ.jpg
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: Android SDK
   description: An SDK that provides you the API libraries and developer tools necessary
@@ -66,6 +72,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1010/m8jf0po4imu8t5eemjdd.png
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/android/app/build.gradle
   detection_source: android/app/build.gradle
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -79,7 +86,7 @@ tools:
   category: Libraries
   sub_category: Javascript UI Libraries
   image_url: https://img.stackshare.io/service/1020/OYIaJ1KK.png
-  detection_source_url: ios/Podfile.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/ios/Podfile.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -93,7 +100,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Cross-Platform Mobile Development
   image_url: https://img.stackshare.io/service/2699/KoK6gHzp.jpg
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -107,7 +114,7 @@ tools:
   category: Libraries
   sub_category: Monitoring for Analytics
   image_url: https://img.stackshare.io/service/11559/zustand.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 15:04:03.000000000 Z
@@ -121,8 +128,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: JavaScript Compilers
   image_url: https://img.stackshare.io/service/2739/-1wfGjNw.png
-  detection_source_url: yarn.lock
-  detection_source: package.json
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
+  detection_source: babel.config.js
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
 - name: ESLint
@@ -134,6 +141,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Code Review
   image_url: https://img.stackshare.io/service/3337/Q4L7Jncy.jpg
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/package.json
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -145,6 +153,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/maxgfr/medoc
   detection_source: Repo Metadata
 - name: GitHub Actions
   description: Automate your workflow from idea to production
@@ -154,7 +163,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/11563/actions.png
-  detection_source: ".github/workflows/url-checker.yml"
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/.github/workflows/build-android.yml
+  detection_source: ".github/workflows/build-android.yml"
   last_updated_by: renovate[bot]
   last_updated_on: 2023-02-11 15:35:06.000000000 Z
 - name: Gradle
@@ -166,7 +176,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Java Build Tools
   image_url: https://img.stackshare.io/service/975/gradlephant-social-black-bg.png
-  detection_source: android/gradlew.bat
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/android/app/build.gradle
+  detection_source: android/app/build.gradle
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
 - name: Jest
@@ -179,7 +190,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Javascript Testing Framework
   image_url: https://img.stackshare.io/service/830/jest.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -191,6 +202,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Front End Package Manager
   image_url: https://img.stackshare.io/service/5848/44mC-kJ3.jpg
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: yarn.lock
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -202,6 +214,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Front End Package Manager
   image_url: https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/package.json
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -213,6 +226,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Operating Systems
   image_url: https://img.stackshare.io/service/9586/ZvmtaSXW_400x400.jpg
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/android/app/build.gradle
   detection_source: android/app/build.gradle
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -224,6 +238,7 @@ tools:
   category: Libraries
   sub_category: CocoaPods Packages
   image_url: https://img.stackshare.io/service/2426/e1cbdef9d4b11484049a033886578e54_400x400.png
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/ios/Podfile.lock
   detection_source: ios/Podfile.lock
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -237,7 +252,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15810/default_004658cda9b38934f2871435e9dc15608c86e8be.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -251,7 +266,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15934/default_54b691c123fc8979741e800e4dcd3936c0f3b246.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -265,7 +280,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/18225/default_88b0d2e50daafd07d82e1afc6ee8f1b97181a07d.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -279,7 +294,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15840/default_004658cda9b38934f2871435e9dc15608c86e8be.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2022-01-01 20:44:03.000000000 Z
@@ -293,7 +308,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16569/default_682ffbfa52bb1873b212151cffed5d464d6efdfb.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -307,7 +322,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16593/default_ebd83b4f0415be108d977ea72558b13fd7c5283d.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -321,7 +336,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15839/default_4479dbac220be99e50e724b2df6cf415241d71fd.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -335,7 +350,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16609/default_e654289254bcb9b55e3dca992739e962dc0c7297.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-29 23:20:06.000000000 Z
@@ -350,7 +365,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/18236/default_006273ebad013729e0798e0376579caca9efaa4e.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -364,7 +379,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/17405/default_c11ea7d401c11f11d89301d0302509ab7d72e5ac.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-05 14:37:43.000000000 Z
@@ -378,7 +393,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16350/default_4cc3f31b8c64a6268fc123f0965a09d1b11180af.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2022-01-02 13:27:44.000000000 Z
@@ -392,7 +407,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16699/default_5ea3918e441555ef1fd413f4100fe15fe23b366f.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -406,7 +421,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/18257/default_315a767553036d5263c95420817fe68cd3885651.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2021-12-27 21:35:38.000000000 Z
@@ -420,7 +435,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16064/default_5a461d436012a0c4024534aaba303dcdb0297d24.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -434,7 +449,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/18169/default_4ad5899bf99118763f1e1098ab583aaff0340ee8.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -448,7 +463,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/17141/default_0ffbf6d9ee2940fe94be8424fd9afff068fff458.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -462,7 +477,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/17683/default_894a45ad01fa93ac472db719cb1ef1b89f2924f0.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
@@ -476,7 +491,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15929/default_ac622bc364a601d766b9a6f6039f191492f54d65.png
-  detection_source_url: yarn.lock
+  detection_source_url: https://github.com/maxgfr/medoc/blob/master/yarn.lock
   detection_source: package.json
   last_updated_by: maxgfr
   last_updated_on: 2023-02-11 11:51:05.000000000 Z
