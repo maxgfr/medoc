@@ -41,7 +41,7 @@ jobs:
             word: '60355340'
           - url: >-
               https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt
-            word: '60000777'
+            word: '60002504'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
