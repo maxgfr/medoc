@@ -44,7 +44,7 @@ jobs:
             word: '60002504'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Check if user can download file
         run: |
           curl ${{ matrix.list.url }} | grep -q ${{ matrix.list.word }}
