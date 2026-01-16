@@ -16,31 +16,31 @@ jobs:
       matrix:
         list:
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_bdpm.txt
             word: '61266250'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_CIP_bdpm.txt
             word: '60002283'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_COMPO_bdpm.txt
             word: '60002283'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_SMR_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_HAS_SMR_bdpm.txt
             word: '60054077'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_HAS_ASMR_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_HAS_ASMR_bdpm.txt
             word: '60054077'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=HAS_LiensPageCT_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/HAS_LiensPageCT_bdpm.txt
             word: CT-20086
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_GENER_bdpm.txt
             word: AMOXICILLINE
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/file/CIS_CPD_bdpm.txt
             word: '60355340'
           - url: >-
-              https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt
+              https://base-donnees-publique.medicaments.gouv.fr/download/CIS_InfoImportantes.txt
             word: '60002504'
     steps:
       - name: Checkout repository
